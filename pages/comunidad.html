@@ -1,0 +1,1285 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comunidad | Sabores del Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#FF6B35',
+                        'secondary': '#2EC4B6',
+                        'accent': '#FFBF69',
+                        'dark': '#1A535C',
+                        'light': '#F7FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .btn-secondary {
+                @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .card {
+                @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300;
+            }
+            
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold text-dark mb-6;
+            }
+            
+            .container-custom {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+
+            .star-rating {
+                @apply flex items-center;
+            }
+
+            .star {
+                @apply text-gray-300 text-xl;
+            }
+
+            .star.filled {
+                @apply text-accent;
+            }
+
+            .nav-link {
+                @apply text-dark hover:text-primary transition-all duration-300;
+            }
+
+            .mobile-menu {
+                @apply fixed inset-0 bg-dark bg-opacity-90 z-50 transform transition-transform duration-300;
+            }
+
+            .pagination-item {
+                @apply px-3 py-1 rounded-md mx-1 bg-gray-200 hover:bg-primary hover:text-white transition-all duration-300;
+            }
+
+            .pagination-item.active {
+                @apply bg-primary text-white;
+            }
+
+            .community-tab {
+                @apply px-4 py-2 font-medium border-b-2 border-transparent hover:text-primary transition-all duration-300;
+            }
+
+            .community-tab.active {
+                @apply text-primary border-primary;
+            }
+
+            .badge {
+                @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+            }
+
+            .badge-primary {
+                @apply bg-primary bg-opacity-10 text-primary;
+            }
+
+            .badge-secondary {
+                @apply bg-secondary bg-opacity-10 text-secondary;
+            }
+
+            .badge-accent {
+                @apply bg-accent bg-opacity-20 text-dark;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- Navegación -->
+    <header class="bg-white shadow-md">
+        <div class="container-custom">
+            <nav class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-primary">Sabores</span>
+                        <span class="text-2xl font-bold text-dark">del Mundo</span>
+                    </a>
+                </div>
+
+                <!-- Navegación Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="nav-link font-medium">Inicio</a>
+                    <a href="categorias.html" class="nav-link font-medium">Categorías</a>
+                    <a href="comunidad.html" class="nav-link font-medium text-primary">Comunidad</a>
+                    <a href="contacto.html" class="nav-link font-medium">Contacto</a>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="subir-receta.html" class="btn-secondary">
+                        <i class="fas fa-plus mr-2"></i>Subir Receta
+                    </a>
+                    <div class="relative">
+                        <button id="profileDropdown" class="flex items-center focus:outline-none">
+                            <img src="../img/homer.jpg" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-primary">
+                        </button>
+                        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden">
+                            <a href="perfil.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                            <a href="subir-receta.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mis Recetas</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Favoritos</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Configuración</a>
+                            <div class="border-t border-gray-200 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menú Hamburguesa (Móvil) -->
+                <div class="md:hidden">
+                    <button id="menuBtn" class="text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menú Móvil -->
+    <div id="mobileMenu" class="mobile-menu translate-x-full md:hidden">
+        <div class="flex flex-col h-full p-8">
+            <div class="flex justify-end">
+                <button id="closeMenuBtn" class="text-white focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-8 mt-16">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="../img/homer.jpg" alt="Perfil" class="w-20 h-20 rounded-full border-2 border-primary mb-2">
+                    <h3 class="text-white font-medium">Pedro Picapiedra</h3>
+                </div>
+                <a href="../index.html" class="text-white text-xl hover:text-primary transition-all duration-300">Inicio</a>
+                <a href="categorias.html" class="text-white text-xl hover:text-primary transition-all duration-300">Categorías</a>
+                <a href="comunidad.html" class="text-white text-xl hover:text-primary transition-all duration-300">Comunidad</a>
+                <a href="contacto.html" class="text-white text-xl hover:text-primary transition-all duration-300">Contacto</a>
+                <a href="perfil.html" class="text-white text-xl hover:text-primary transition-all duration-300">Mi Perfil</a>
+                <a href="subir-receta.html" class="btn-secondary w-full text-center">
+                    <i class="fas fa-plus mr-2"></i>Subir Receta
+                </a>
+                <a href="#" class="text-white text-xl hover:text-primary transition-all duration-300">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-gray-100 py-3">
+        <div class="container-custom">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="../index.html" class="hover:text-primary">Inicio</a>
+                <span class="mx-2">/</span>
+                <span class="text-primary font-medium">Comunidad</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="py-12">
+        <div class="container-custom">
+            <h1 class="section-title text-center mb-10">Nuestra Comunidad</h1>
+            
+            <!-- Estadísticas de la Comunidad -->
+            <section class="mb-16">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <div class="bg-white rounded-xl shadow-md p-6 text-center">
+                        <div class="text-primary text-4xl mb-2">
+                            <i class="fas fa-users"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-dark mb-2">15,482</h3>
+                        <p class="text-gray-600">Miembros activos</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 text-center">
+                        <div class="text-primary text-4xl mb-2">
+                            <i class="fas fa-utensils"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-dark mb-2">8,745</h3>
+                        <p class="text-gray-600">Recetas compartidas</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 text-center">
+                        <div class="text-primary text-4xl mb-2">
+                            <i class="fas fa-globe-americas"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-dark mb-2">127</h3>
+                        <p class="text-gray-600">Países representados</p>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md p-6 text-center">
+                        <div class="text-primary text-4xl mb-2">
+                            <i class="fas fa-comments"></i>
+                        </div>
+                        <h3 class="text-3xl font-bold text-dark mb-2">42,156</h3>
+                        <p class="text-gray-600">Comentarios</p>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Buscador -->
+            <section class="mb-12">
+                <div class="max-w-3xl mx-auto">
+                    <div class="relative">
+                        <input type="text" class="input-field pl-12 py-3 text-lg" placeholder="Buscar miembros, recetas o discusiones...">
+                        <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                            <i class="fas fa-search text-gray-400 text-lg"></i>
+                        </div>
+                        <button class="absolute inset-y-0 right-0 px-4 text-white bg-primary rounded-r-lg">
+                            Buscar
+                        </button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Pestañas de Comunidad -->
+            <section class="mb-8">
+                <div class="border-b border-gray-200">
+                    <div class="flex overflow-x-auto">
+                        <button id="tabChefs" class="community-tab active whitespace-nowrap">Chefs Destacados</button>
+                        <button id="tabRecetas" class="community-tab whitespace-nowrap">Recetas Populares</button>
+                        <button id="tabDiscusiones" class="community-tab whitespace-nowrap">Discusiones</button>
+                        <button id="tabEventos" class="community-tab whitespace-nowrap">Eventos</button>
+                        <button id="tabBlog" class="community-tab whitespace-nowrap">Blog Culinario</button>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Contenido de Pestañas -->
+            <div>
+                <!-- Chefs Destacados -->
+                <div id="contentChefs" class="tab-content">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                        <!-- Chef 1 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Chef" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Carlos Rodríguez</h3>
+                                <p class="text-gray-600 mb-4">Chef especializado en cocina mediterránea con más de 15 años de experiencia.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="badge badge-primary">Paella</span>
+                                    <span class="badge badge-primary">Arroces</span>
+                                    <span class="badge badge-primary">Mediterráneo</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 ml-2">(4.9)</span>
+                                    </div>
+                                    <span class="text-gray-600">124 recetas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="perfil.html" class="text-primary font-medium hover:underline">Ver perfil</a>
+                                    <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                        Seguir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chef 2 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Chef" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Japón
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Yuki Tanaka</h3>
+                                <p class="text-gray-600 mb-4">Experta en cocina japonesa tradicional y fusión asiática contemporánea.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="badge badge-primary">Sushi</span>
+                                    <span class="badge badge-primary">Ramen</span>
+                                    <span class="badge badge-primary">Fusión</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 ml-2">(4.8)</span>
+                                    </div>
+                                    <span class="text-gray-600">87 recetas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="perfil.html" class="text-primary font-medium hover:underline">Ver perfil</a>
+                                    <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                        Seguir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chef 3 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Chef" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Italia
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Giulia Bianchi</h3>
+                                <p class="text-gray-600 mb-4">Pastelera italiana con pasión por los postres tradicionales y modernos.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="badge badge-primary">Postres</span>
+                                    <span class="badge badge-primary">Pasta</span>
+                                    <span class="badge badge-primary">Italiano</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 ml-2">(4.9)</span>
+                                    </div>
+                                    <span class="text-gray-600">112 recetas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="perfil.html" class="text-primary font-medium hover:underline">Ver perfil</a>
+                                    <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                        Seguir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chef 4 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Chef" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    México
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Miguel Ángel Pérez</h3>
+                                <p class="text-gray-600 mb-4">Chef mexicano especializado en cocina tradicional y street food.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="badge badge-primary">Tacos</span>
+                                    <span class="badge badge-primary">Picante</span>
+                                    <span class="badge badge-primary">Mexicano</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 ml-2">(4.7)</span>
+                                    </div>
+                                    <span class="text-gray-600">98 recetas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="perfil.html" class="text-primary font-medium hover:underline">Ver perfil</a>
+                                    <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                        Seguir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chef 5 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Chef" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Francia
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Laura Martínez</h3>
+                                <p class="text-gray-600 mb-4">Chef francesa con formación en Le Cordon Bleu y especialista en repostería.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="badge badge-primary">Repostería</span>
+                                    <span class="badge badge-primary">Francés</span>
+                                    <span class="badge badge-primary">Gourmet</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 ml-2">(4.8)</span>
+                                    </div>
+                                    <span class="text-gray-600">76 recetas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="perfil.html" class="text-primary font-medium hover:underline">Ver perfil</a>
+                                    <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                        Seguir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Chef 6 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Chef" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    India
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Raj Patel</h3>
+                                <p class="text-gray-600 mb-4">Experto en cocina india tradicional y especias aromáticas.</p>
+                                <div class="flex flex-wrap gap-2 mb-4">
+                                    <span class="badge badge-primary">Curry</span>
+                                    <span class="badge badge-primary">Especias</span>
+                                    <span class="badge badge-primary">Vegetariano</span>
+                                </div>
+                                <div class="flex justify-between items-center mb-4">
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 ml-2">(4.6)</span>
+                                    </div>
+                                    <span class="text-gray-600">84 recetas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="perfil.html" class="text-primary font-medium hover:underline">Ver perfil</a>
+                                    <button class="bg-gray-200 text-gray-700 font-semibold py-1 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                        Seguir
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">12</a>
+                    </div>
+                </div>
+                
+                <!-- Recetas Populares -->
+                <div id="contentRecetas" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Receta 1 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Valenciana" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella Valenciana</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Carlos Rodríguez</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-eye mr-1"></i> 12.5k vistas</span>
+                                    <span><i class="far fa-comment mr-1"></i> 342 comentarios</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 2 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pizza Napolitana" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Italia
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Pizza Napolitana</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Giulia Bianchi</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-eye mr-1"></i> 10.2k vistas</span>
+                                    <span><i class="far fa-comment mr-1"></i> 287 comentarios</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 3 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Sushi" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Japón
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Sushi Variado</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Yuki Tanaka</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-eye mr-1"></i> 9.8k vistas</span>
+                                    <span><i class="far fa-comment mr-1"></i> 256 comentarios</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 4 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="../img/tacos-al-pastor.jpg"Tacos" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    México
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Tacos al Pastor</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Miguel Ángel Pérez</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-eye mr-1"></i> 8.7k vistas</span>
+                                    <span><i class="far fa-comment mr-1"></i> 198 comentarios</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 5 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Curry" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    India
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Curry de Pollo</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Raj Patel</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-eye mr-1"></i> 7.5k vistas</span>
+                                    <span><i class="far fa-comment mr-1"></i> 167 comentarios</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 6 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Ratatouille" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Francia
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Ratatouille</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Laura Martínez</span>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-eye mr-1"></i> 6.9k vistas</span>
+                                    <span><i class="far fa-comment mr-1"></i> 145 comentarios</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                        <i class="far fa-heart"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">20</a>
+                    </div>
+                </div>
+                
+                <!-- Discusiones -->
+                <div id="contentDiscusiones" class="tab-content hidden">
+                    <!-- Crear nueva discusión -->
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                        <h3 class="text-xl font-bold text-dark mb-4">Iniciar una nueva discusión</h3>
+                        <div class="mb-4">
+                            <input type="text" class="input-field" placeholder="Título de la discusión">
+                        </div>
+                        <div class="mb-4">
+                            <textarea rows="4" class="input-field" placeholder="Escribe tu mensaje aquí..."></textarea>
+                        </div>
+                        <div class="flex justify-between items-center">
+                            <div class="flex space-x-2">
+                                <select class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="tecnicas">Técnicas de cocina</option>
+                                    <option value="ingredientes">Ingredientes</option>
+                                    <option value="recetas">Recetas</option>
+                                    <option value="equipamiento">Equipamiento</option>
+                                    <option value="general">General</option>
+                                </select>
+                                <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                    <i class="fas fa-paperclip"></i>
+                                </button>
+                            </div>
+                            <button class="btn-primary">
+                                Publicar discusión
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de discusiones -->
+                    <div class="space-y-6">
+                        <!-- Discusión 1 -->
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-dark hover:text-primary transition-all duration-300">
+                                            <a href="#">¿Cuál es el secreto para una paella perfecta?</a>
+                                        </h3>
+                                        <div class="flex items-center mt-2">
+                                            <span class="badge badge-primary mr-2">Técnicas de cocina</span>
+                                            <span class="text-sm text-gray-500"><i class="far fa-comment mr-1"></i> 42 respuestas</span>
+                                            <span class="text-sm text-gray-500 ml-4"><i class="far fa-eye mr-1"></i> 1.2k vistas</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-gray-500">Hace 2 días</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Usuario" class="w-10 h-10 rounded-full mr-4">
+                                    <div>
+                                        <div class="flex items-center mb-2">
+                                            <span class="font-medium text-dark mr-2">María García</span>
+                                            <span class="text-xs text-gray-500">Miembro desde 2023</span>
+                                        </div>
+                                        <p class="text-gray-600">Llevo tiempo intentando hacer una paella auténtica valenciana, pero siempre me queda el arroz demasiado blando o demasiado duro. ¿Alguien podría compartir sus consejos sobre el tiempo exacto de cocción y la proporción de líquido?</p>
+                                        <div class="flex mt-4">
+                                            <button class="flex items-center text-gray-500 hover:text-primary transition-all duration-300 mr-4">
+                                                <i class="far fa-thumbs-up mr-1"></i> 24
+                                            </button>
+                                            <a href="#" class="text-primary font-medium hover:underline">Ver discusión completa</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Discusión 2 -->
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-dark hover:text-primary transition-all duration-300">
+                                            <a href="#">Alternativas al gluten en repostería</a>
+                                        </h3>
+                                        <div class="flex items-center mt-2">
+                                            <span class="badge badge-primary mr-2">Ingredientes</span>
+                                            <span class="text-sm text-gray-500"><i class="far fa-comment mr-1"></i> 36 respuestas</span>
+                                            <span class="text-sm text-gray-500 ml-4"><i class="far fa-eye mr-1"></i> 987 vistas</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-gray-500">Hace 4 días</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Usuario" class="w-10 h-10 rounded-full mr-4">
+                                    <div>
+                                        <div class="flex items-center mb-2">
+                                            <span class="font-medium text-dark mr-2">Javier Fernández</span>
+                                            <span class="text-xs text-gray-500">Miembro desde 2022</span>
+                                        </div>
+                                        <p class="text-gray-600">Estoy buscando alternativas a la harina de trigo para hacer pasteles y galletas sin gluten. He probado con harina de almendra y de coco, pero no consigo la textura adecuada. ¿Qué mezclas de harinas sin gluten recomendáis?</p>
+                                        <div class="flex mt-4">
+                                            <button class="flex items-center text-gray-500 hover:text-primary transition-all duration-300 mr-4">
+                                                <i class="far fa-thumbs-up mr-1"></i> 18
+                                            </button>
+                                            <a href="#" class="text-primary font-medium hover:underline">Ver discusión completa</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Discusión 3 -->
+                        <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                            <div class="p-6">
+                                <div class="flex justify-between items-start mb-4">
+                                    <div>
+                                        <h3 class="text-xl font-bold text-dark hover:text-primary transition-all duration-300">
+                                            <a href="#">¿Qué cuchillos son imprescindibles en una cocina?</a>
+                                        </h3>
+                                        <div class="flex items-center mt-2">
+                                            <span class="badge badge-primary mr-2">Equipamiento</span>
+                                            <span class="text-sm text-gray-500"><i class="far fa-comment mr-1"></i> 28 respuestas</span>
+                                            <span class="text-sm text-gray-500 ml-4"><i class="far fa-eye mr-1"></i> 756 vistas</span>
+                                        </div>
+                                    </div>
+                                    <span class="text-sm text-gray-500">Hace 1 semana</span>
+                                </div>
+                                <div class="flex items-start">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuario" class="w-10 h-10 rounded-full mr-4">
+                                    <div>
+                                        <div class="flex items-center mb-2">
+                                            <span class="font-medium text-dark mr-2">Carlos Rodríguez</span>
+                                            <span class="text-xs text-gray-500">Miembro desde 2021</span>
+                                        </div>
+                                        <p class="text-gray-600">Estoy montando mi primera cocina profesional y quiero invertir en buenos cuchillos. ¿Cuáles consideráis imprescindibles para empezar? ¿Qué marcas recomendáis por su relación calidad-precio?</p>
+                                        <div class="flex mt-4">
+                                            <button class="flex items-center text-gray-500 hover:text-primary transition-all duration-300 mr-4">
+                                                <i class="far fa-thumbs-up mr-1"></i> 32
+                                            </button>
+                                            <a href="#" class="text-primary font-medium hover:underline">Ver discusión completa</a>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">15</a>
+                    </div>
+                </div>
+                
+                <!-- Eventos -->
+                <div id="contentEventos" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Evento 1 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Evento" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-primary text-white font-semibold py-1 px-3 rounded-full text-sm">
+                                    15 Mayo 2025
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Festival Gastronómico Mediterráneo</h3>
+                                <p class="text-gray-600 mb-4">Descubre los sabores del Mediterráneo en este festival que reúne a los mejores chefs de España, Italia, Grecia y más.</p>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                    <span class="text-gray-600">Madrid, España</span>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-600">10:00 - 20:00</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">125 asistentes</span>
+                                    <a href="#" class="btn-primary text-sm py-1 px-3">
+                                        Más información
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Evento 2 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="../img/masterclass-sushi.jpg" alt="Evento" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-primary text-white font-semibold py-1 px-3 rounded-full text-sm">
+                                    22 Junio 2025
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Masterclass de Sushi</h3>
+                                <p class="text-gray-600 mb-4">Aprende a preparar sushi auténtico japonés con la chef Yuki Tanaka en esta masterclass exclusiva.</p>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                    <span class="text-gray-600">Barcelona, España</span>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-600">18:00 - 21:00</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">48 asistentes</span>
+                                    <a href="#" class="btn-primary text-sm py-1 px-3">
+                                        Más información
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Evento 3 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1556910103-1c02745aae4d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Evento" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-primary text-white font-semibold py-1 px-3 rounded-full text-sm">
+                                    10 Julio 2025
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Taller de Repostería Francesa</h3>
+                                <p class="text-gray-600 mb-4">Descubre los secretos de la repostería francesa con Laura Martínez, especialista en macarons y éclairs.</p>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                    <span class="text-gray-600">Valencia, España</span>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-600">16:00 - 19:00</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">36 asistentes</span>
+                                    <a href="#" class="btn-primary text-sm py-1 px-3">
+                                        Más información
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Evento 4 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1505935428862-770b6f24f629?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Evento" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-primary text-white font-semibold py-1 px-3 rounded-full text-sm">
+                                    5 Agosto 2025
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Ruta de Tapas</h3>
+                                <p class="text-gray-600 mb-4">Recorre los mejores bares de tapas de Madrid con Carlos Rodríguez, experto en gastronomía española.</p>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                    <span class="text-gray-600">Madrid, España</span>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-600">19:00 - 23:00</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">72 asistentes</span>
+                                    <a href="#" class="btn-primary text-sm py-1 px-3">
+                                        Más información
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Evento 5 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Evento" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-primary text-white font-semibold py-1 px-3 rounded-full text-sm">
+                                    18 Septiembre 2025
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Cena Maridaje: Vinos y Quesos</h3>
+                                <p class="text-gray-600 mb-4">Disfruta de una experiencia gastronómica única con los mejores vinos y quesos españoles.</p>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                    <span class="text-gray-600">Sevilla, España</span>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-600">20:00 - 23:00</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">54 asistentes</span>
+                                    <a href="#" class="btn-primary text-sm py-1 px-3">
+                                        Más información
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Evento 6 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1555939594-58d7cb561ad1?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Evento" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-primary text-white font-semibold py-1 px-3 rounded-full text-sm">
+                                    2 Octubre 2025
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Curso de Cocina Mexicana</h3>
+                                <p class="text-gray-600 mb-4">Aprende a preparar auténticos platos mexicanos con Miguel Ángel Pérez, chef especializado en cocina tradicional.</p>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                    <span class="text-gray-600">Barcelona, España</span>
+                                </div>
+                                <div class="flex items-center mb-4">
+                                    <i class="fas fa-clock text-primary mr-2"></i>
+                                    <span class="text-gray-600">17:00 - 20:00</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500">42 asistentes</span>
+                                    <a href="#" class="btn-primary text-sm py-1 px-3">
+                                        Más información
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                    </div>
+                </div>
+                
+                <!-- Blog Culinario -->
+                <div id="contentBlog" class="tab-content hidden">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                        <!-- Artículo 1 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Artículo" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Técnicas
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Los secretos de la auténtica paella valenciana</h3>
+                                <p class="text-gray-600 mb-4">Descubre los ingredientes tradicionales y las técnicas para preparar una paella valenciana perfecta.</p>
+                                <div class="flex items-center mb-4">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Autor" class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium text-dark">Carlos Rodríguez</p>
+                                        <p class="text-sm text-gray-500">15 Marzo 2025</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500"><i class="far fa-eye mr-1"></i> 3.2k lecturas</span>
+                                    <a href="#" class="text-primary font-medium hover:underline">Leer más</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Artículo 2 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Artículo" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Historia
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">La historia del sushi: de la conservación a la alta cocina</h3>
+                                <p class="text-gray-600 mb-4">Un recorrido por la fascinante evolución del sushi desde sus orígenes como método de conservación hasta convertirse en un arte culinario.</p>
+                                <div class="flex items-center mb-4">
+                                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Autor" class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium text-dark">Yuki Tanaka</p>
+                                        <p class="text-sm text-gray-500">2 Marzo 2025</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500"><i class="far fa-eye mr-1"></i> 2.8k lecturas</span>
+                                    <a href="#" class="text-primary font-medium hover:underline">Leer más</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Artículo 3 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Artículo" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Ingredientes
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Guía completa de especias indias: usos y combinaciones</h3>
+                                <p class="text-gray-600 mb-4">Aprende a identificar y utilizar las especias esenciales de la cocina india para crear platos auténticos y llenos de sabor.</p>
+                                <div class="flex items-center mb-4">
+                                    <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Autor" class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium text-dark">Raj Patel</p>
+                                        <p class="text-sm text-gray-500">25 Febrero 2025</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500"><i class="far fa-eye mr-1"></i> 2.5k lecturas</span>
+                                    <a href="#" class="text-primary font-medium hover:underline">Leer más</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Artículo 4 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Artículo" class="w-full h-64 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Técnicas
+                                </div>
+                            </div>
+                            <div class="p-6">
+                                <h3 class="text-xl font-bold text-dark mb-2">Dominando el arte del tiramisú perfecto</h3>
+                                <p class="text-gray-600 mb-4">Todos los secretos para preparar un tiramisú tradicional italiano con la textura y el sabor ideales.</p>
+                                <div class="flex items-center mb-4">
+                                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Autor" class="w-10 h-10 rounded-full mr-3">
+                                    <div>
+                                        <p class="font-medium text-dark">Giulia Bianchi</p>
+                                        <p class="text-sm text-gray-500">18 Febrero 2025</p>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <span class="text-sm text-gray-500"><i class="far fa-eye mr-1"></i> 2.3k lecturas</span>
+                                    <a href="#" class="text-primary font-medium hover:underline">Leer más</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">8</a>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Unirse a la Comunidad -->
+            <section class="bg-white rounded-xl shadow-md p-8 text-center mt-16">
+                <h2 class="text-2xl font-bold text-dark mb-4">¿Quieres formar parte de nuestra comunidad?</h2>
+                <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Únete a miles de amantes de la gastronomía, comparte tus recetas, participa en discusiones y descubre nuevos sabores de todo el mundo.</p>
+                <div class="flex flex-col sm:flex-row justify-center gap-4">
+                    <button class="btn-primary" id="openLoginModal">
+                        Iniciar Sesión
+                    </button>
+                    <button class="btn-secondary" id="openRegisterModal">
+                        Registrarse
+                    </button>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8 mt-12">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Columna 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Sabores del Mundo</h3>
+                    <p class="text-gray-300 mb-4">Plataforma global para compartir y descubrir recetas auténticas de todas las culturas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna 2 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="../index.html" class="text-gray-300 hover:text-primary transition-all duration-300">Inicio</a></li>
+                        <li><a href="categorias.html" class="text-gray-300 hover:text-primary transition-all duration-300">Categorías</a></li>
+                        <li><a href="comunidad.html" class="text-gray-300 hover:text-primary transition-all duration-300">Comunidad</a></li>
+                        <li><a href="contacto.html" class="text-gray-300 hover:text-primary transition-all duration-300">Contacto</a></li>
+                        <li><a href="subir-receta.html" class="text-gray-300 hover:text-primary transition-all duration-300">Subir Receta</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 3 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Categorías Populares</h3>
+                    <ul class="space-y-2">
+                        <li><a href="categorias.html#postres" class="text-gray-300 hover:text-primary transition-all duration-300">Postres</a></li>
+                        <li><a href="categorias.html#vegetariano" class="text-gray-300 hover:text-primary transition-all duration-300">Vegetariano</a></li>
+                        <li><a href="categorias.html#carnes" class="text-gray-300 hover:text-primary transition-all duration-300">Carnes</a></li>
+                        <li><a href="categorias.html#mariscos" class="text-gray-300 hover:text-primary transition-all duration-300">Mariscos</a></li>
+                        <li><a href="categorias.html#sopas" class="text-gray-300 hover:text-primary transition-all duration-300">Sopas</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 4 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">Calle Lope de Vega, 4 , España</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">info@saboresdelmundo.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">+34 912 345 678</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Política de Privacidad</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Términos de Uso</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

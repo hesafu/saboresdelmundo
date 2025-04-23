@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Búsqueda de Recetas | Sabores del Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#FF6B35',
+                        'secondary': '#2EC4B6',
+                        'accent': '#FFBF69',
+                        'dark': '#1A535C',
+                        'light': '#F7FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .btn-secondary {
+                @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .card {
+                @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300;
+            }
+            
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold text-dark mb-6;
+            }
+            
+            .container-custom {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+
+            .star-rating {
+                @apply flex items-center;
+            }
+
+            .star {
+                @apply text-gray-300 text-xl;
+            }
+
+            .star.filled {
+                @apply text-accent;
+            }
+
+            .nav-link {
+                @apply text-dark hover:text-primary transition-all duration-300;
+            }
+
+            .mobile-menu {
+                @apply fixed inset-0 bg-dark bg-opacity-90 z-50 transform transition-transform duration-300;
+            }
+
+            .pagination-item {
+                @apply px-3 py-1 rounded-md mx-1 bg-gray-200 hover:bg-primary hover:text-white transition-all duration-300;
+            }
+
+            .pagination-item.active {
+                @apply bg-primary text-white;
+            }
+
+            .filter-checkbox {
+                @apply w-4 h-4 text-primary focus:ring-primary rounded;
+            }
+
+            .filter-label {
+                @apply ml-2 text-gray-700;
+            }
+
+            .filter-group {
+                @apply mb-6;
+            }
+
+            .filter-title {
+                @apply font-bold text-dark mb-3;
+            }
+
+            .range-slider {
+                @apply w-full h-2 bg-gray-200 rounded-lg appearance-none cursor-pointer;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- Navegación -->
+    <header class="bg-white shadow-md">
+        <div class="container-custom">
+            <nav class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-primary">Sabores</span>
+                        <span class="text-2xl font-bold text-dark">del Mundo</span>
+                    </a>
+                </div>
+
+                <!-- Navegación Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="nav-link font-medium">Inicio</a>
+                    <a href="categorias.html" class="nav-link font-medium">Categorías</a>
+                    <a href="comunidad.html" class="nav-link font-medium">Comunidad</a>
+                    <a href="contacto.html" class="nav-link font-medium">Contacto</a>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="subir-receta.html" class="btn-secondary">
+                        <i class="fas fa-plus mr-2"></i>Subir Receta
+                    </a>
+                    <a href="#" class="btn-primary">
+                        <i class="fas fa-user mr-2"></i>Iniciar Sesión
+                    </a>
+                </div>
+
+                <!-- Menú Hamburguesa (Móvil) -->
+                <div class="md:hidden">
+                    <a href="#" class="text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </a>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+
+    <div class="bg-gray-100 py-3">
+        <div class="container-custom">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="../index.html" class="hover:text-primary">Inicio</a>
+                <span class="mx-2">/</span>
+                <span class="text-primary font-medium">Búsqueda</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="py-12">
+        <div class="container-custom">
+            <h1 class="section-title text-center mb-10">Buscar Recetas</h1>
+            
+            <!-- Barra de Búsqueda Principal -->
+            <div class="max-w-4xl mx-auto mb-12">
+                <div class="flex flex-col md:flex-row gap-4">
+                    <div class="flex-grow">
+                        <div class="relative">
+                            <input type="text" class="input-field pl-12" placeholder="Buscar recetas, ingredientes, chefs...">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    <a href="#" class="btn-primary text-center">Buscar</a>
+                </div>
+            </div>
+            
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Filtros Laterales -->
+                <div class="lg:w-1/4">
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <div class="flex justify-between items-center mb-6">
+                            <h2 class="text-xl font-bold text-dark">Filtros</h2>
+                            <a href="#" class="text-primary text-sm font-medium hover:underline">Limpiar filtros</a>
+                        </div>
+                        
+                        <!-- Filtro por Continente -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">Continente</h3>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="europa" class="filter-checkbox">
+                                    <label for="europa" class="filter-label">Europa</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="asia" class="filter-checkbox">
+                                    <label for="asia" class="filter-label">Asia</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="america" class="filter-checkbox">
+                                    <label for="america" class="filter-label">América</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="africa" class="filter-checkbox">
+                                    <label for="africa" class="filter-label">África</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="oceania" class="filter-checkbox">
+                                    <label for="oceania" class="filter-label">Oceanía</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Filtro por Tipo de Plato -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">Tipo de Plato</h3>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="entrante" class="filter-checkbox">
+                                    <label for="entrante" class="filter-label">Entrante</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="principal" class="filter-checkbox">
+                                    <label for="principal" class="filter-label">Plato principal</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="postre" class="filter-checkbox">
+                                    <label for="postre" class="filter-label">Postre</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="bebida" class="filter-checkbox">
+                                    <label for="bebida" class="filter-label">Bebida</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="aperitivo" class="filter-checkbox">
+                                    <label for="aperitivo" class="filter-label">Aperitivo</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Filtro por Dificultad -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">Dificultad</h3>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="facil" class="filter-checkbox">
+                                    <label for="facil" class="filter-label">Fácil</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="media" class="filter-checkbox">
+                                    <label for="media" class="filter-label">Media</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="dificil" class="filter-checkbox">
+                                    <label for="dificil" class="filter-label">Difícil</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Filtro por Tiempo de Preparación -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">Tiempo de Preparación</h3>
+                            <div class="space-y-4">
+                                <div class="flex justify-between text-sm text-gray-600">
+                                    <span>0 min</span>
+                                    <span>180+ min</span>
+                                </div>
+                                <input type="range" min="0" max="180" value="90" class="range-slider">
+                                <div class="text-center text-sm text-gray-600">
+                                    <span>90 minutos o menos</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Filtro por Valoración -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">Valoración Mínima</h3>
+                            <div class="flex items-center space-x-1">
+                                <a href="#" class="text-2xl text-accent"><i class="fas fa-star"></i></a>
+                                <a href="#" class="text-2xl text-accent"><i class="fas fa-star"></i></a>
+                                <a href="#" class="text-2xl text-accent"><i class="fas fa-star"></i></a>
+                                <a href="#" class="text-2xl text-gray-300"><i class="fas fa-star"></i></a>
+                                <a href="#" class="text-2xl text-gray-300"><i class="fas fa-star"></i></a>
+                            </div>
+                        </div>
+                        
+                        <!-- Filtro por Dietas Especiales -->
+                        <div class="filter-group">
+                            <h3 class="filter-title">Dietas Especiales</h3>
+                            <div class="space-y-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="vegetariano" class="filter-checkbox">
+                                    <label for="vegetariano" class="filter-label">Vegetariano</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="vegano" class="filter-checkbox">
+                                    <label for="vegano" class="filter-label">Vegano</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="sinGluten" class="filter-checkbox">
+                                    <label for="sinGluten" class="filter-label">Sin gluten</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="sinLactosa" class="filter-checkbox">
+                                    <label for="sinLactosa" class="filter-label">Sin lactosa</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="bajoCalorias" class="filter-checkbox">
+                                    <label for="bajoCalorias" class="filter-label">Bajo en calorías</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <a href="#" class="btn-primary w-full mt-4 block text-center">Aplicar Filtros</a>
+                    </div>
+                </div>
+                
+                <!-- Resultados de Búsqueda -->
+                <div class="lg:w-3/4">
+                    <!-- Controles de Resultados -->
+                    <div class="flex flex-col sm:flex-row justify-between items-start sm:items-center mb-6 gap-4">
+                        <div class="text-gray-600">
+                            Mostrando <span class="font-medium">48</span> resultados para <span class="font-medium">"paella"</span>
+                        </div>
+                        <div class="flex items-center">
+                            <label for="ordenar" class="mr-2 text-gray-600">Ordenar por:</label>
+                            <select id="ordenar" class="input-field py-1 px-3">
+                                <option value="relevancia">Relevancia</option>
+                                <option value="reciente">Más reciente</option>
+                                <option value="valoracion">Mejor valoración</option>
+                                <option value="tiempo">Tiempo de preparación</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Grid de Resultados -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Receta 1 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Valenciana" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella Valenciana</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-3">Auténtica paella valenciana con arroz, azafrán, pollo, conejo y verduras de temporada.</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-primary mr-1"></i>
+                                        <span class="text-sm text-gray-600">90 min</span>
+                                    </div>
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 2 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella de Marisco" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella de Marisco</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-3">Deliciosa paella de mariscos con gambas, mejillones, calamares y arroz con azafrán.</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-primary mr-1"></i>
+                                        <span class="text-sm text-gray-600">75 min</span>
+                                    </div>
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 3 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Arroz Negro" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Arroz Negro</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-3">Tradicional arroz negro con sepia, tinta de calamar y alioli casero.</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-primary mr-1"></i>
+                                        <span class="text-sm text-gray-600">60 min</span>
+                                    </div>
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 4 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fideuá" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Fideuá Valenciana</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-3">Fideuá tradicional valenciana con fideos finos, mariscos y alioli.</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-primary mr-1"></i>
+                                        <span class="text-sm text-gray-600">65 min</span>
+                                    </div>
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 5 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1607118750694-1469a22ef45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Mixta" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella Mixta</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-3">Paella mixta con pollo, conejo, mariscos y verduras de temporada.</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-primary mr-1"></i>
+                                        <span class="text-sm text-gray-600">85 min</span>
+                                    </div>
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 6 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Vegetariana" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella Vegetariana</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-600 text-sm mb-3">Paella vegetariana con alcachofas, pimientos, champiñones y guisantes.</p>
+                                <div class="flex justify-between items-center">
+                                    <div class="flex items-center">
+                                        <i class="fas fa-clock text-primary mr-1"></i>
+                                        <span class="text-sm text-gray-600">55 min</span>
+                                    </div>
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">8</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Columna 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Sabores del Mundo</h3>
+                    <p class="text-gray-300 mb-4">Plataforma global para compartir y descubrir recetas auténticas de todas las culturas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna 2 -->
+                <div>
+                    <h3 class="text-xl font

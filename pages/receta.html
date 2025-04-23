@@ -1,0 +1,884 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalle de Receta - Paella Valenciana | Sabores del Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#FF6B35',
+                        'secondary': '#2EC4B6',
+                        'accent': '#FFBF69',
+                        'dark': '#1A535C',
+                        'light': '#F7FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .btn-secondary {
+                @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .card {
+                @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300;
+            }
+            
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold text-dark mb-6;
+            }
+            
+            .container-custom {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+
+            .star-rating {
+                @apply flex items-center;
+            }
+
+            .star {
+                @apply text-gray-300 text-xl;
+            }
+
+            .star.filled {
+                @apply text-accent;
+            }
+
+            .nav-link {
+                @apply text-dark hover:text-primary transition-all duration-300;
+            }
+
+            .mobile-menu {
+                @apply fixed inset-0 bg-dark bg-opacity-90 z-50 transform transition-transform duration-300;
+            }
+
+            .pagination-item {
+                @apply px-3 py-1 rounded-md mx-1 bg-gray-200 hover:bg-primary hover:text-white transition-all duration-300;
+            }
+
+            .pagination-item.active {
+                @apply bg-primary text-white;
+            }
+
+            .ingredient-item {
+                @apply flex items-center py-2 border-b border-gray-200 last:border-b-0;
+            }
+
+            .step-item {
+                @apply flex items-start py-4 border-b border-gray-200 last:border-b-0;
+            }
+
+            .step-number {
+                @apply flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4;
+            }
+
+            .tab {
+                @apply px-4 py-2 font-medium border-b-2 border-transparent hover:text-primary transition-all duration-300;
+            }
+
+            .tab.active {
+                @apply text-primary border-primary;
+            }
+
+            .comment-item {
+                @apply p-4 border-b border-gray-200 last:border-b-0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- Navegación -->
+    <header class="bg-white shadow-md">
+        <div class="container-custom">
+            <nav class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-primary">Sabores</span>
+                        <span class="text-2xl font-bold text-dark">del Mundo</span>
+                    </a>
+                </div>
+
+                <!-- Navegación Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="nav-link font-medium">Inicio</a>
+                    <a href="categorias.html" class="nav-link font-medium">Categorías</a>
+                    <a href="comunidad.html" class="nav-link font-medium">Comunidad</a>
+                    <a href="contacto.html" class="nav-link font-medium">Contacto</a>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="subir-receta.html" class="btn-secondary">
+                        <i class="fas fa-plus mr-2"></i>Subir Receta
+                    </a>
+                    <button id="loginBtn" class="btn-primary">
+                        <i class="fas fa-user mr-2"></i>Iniciar Sesión
+                    </button>
+                </div>
+
+                <!-- Menú Hamburguesa (Móvil) -->
+                <div class="md:hidden">
+                    <button id="menuBtn" class="text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menú Móvil -->
+    <div id="mobileMenu" class="mobile-menu translate-x-full md:hidden">
+        <div class="flex flex-col h-full p-8">
+            <div class="flex justify-end">
+                <button id="closeMenuBtn" class="text-white focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-8 mt-16">
+                <a href="../index.html" class="text-white text-xl hover:text-primary transition-all duration-300">Inicio</a>
+                <a href="categorias.html" class="text-white text-xl hover:text-primary transition-all duration-300">Categorías</a>
+                <a href="comunidad.html" class="text-white text-xl hover:text-primary transition-all duration-300">Comunidad</a>
+                <a href="contacto.html" class="text-white text-xl hover:text-primary transition-all duration-300">Contacto</a>
+                <a href="subir-receta.html" class="btn-secondary w-full text-center">
+                    <i class="fas fa-plus mr-2"></i>Subir Receta
+                </a>
+                <button id="mobileLoginBtn" class="btn-primary w-full">
+                    <i class="fas fa-user mr-2"></i>Iniciar Sesión
+                </button>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-gray-100 py-3">
+        <div class="container-custom">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="../index.html" class="hover:text-primary">Inicio</a>
+                <span class="mx-2">/</span>
+                <a href="categorias.html" class="hover:text-primary">Categorías</a>
+                <span class="mx-2">/</span>
+                <a href="categorias.html#europe" class="hover:text-primary">Europa</a>
+                <span class="mx-2">/</span>
+                <span class="text-primary font-medium">Paella Valenciana</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="py-12">
+        <div class="container-custom">
+            <div class="flex flex-col lg:flex-row gap-10">
+                <!-- Columna Principal -->
+                <div class="lg:w-2/3">
+                    <!-- Encabezado de Receta -->
+                    <div class="mb-8">
+                        <h1 class="text-4xl font-bold text-dark mb-4">Paella Valenciana Tradicional</h1>
+                        <div class="flex flex-wrap items-center gap-4 mb-4">
+                            <div class="flex items-center">
+                                <i class="fas fa-clock text-primary mr-2"></i>
+                                <span>Tiempo: 1h 30min</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-utensils text-primary mr-2"></i>
+                                <span>Dificultad: Media</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-users text-primary mr-2"></i>
+                                <span>Porciones: 6</span>
+                            </div>
+                            <div class="star-rating">
+                                <span class="star filled"><i class="fas fa-star"></i></span>
+                                <span class="star filled"><i class="fas fa-star"></i></span>
+                                <span class="star filled"><i class="fas fa-star"></i></span>
+                                <span class="star filled"><i class="fas fa-star"></i></span>
+                                <span class="star"><i class="fas fa-star"></i></span>
+                                <span class="ml-2 text-gray-600">(32 valoraciones)</span>
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-6">
+                            <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Chef" class="w-10 h-10 rounded-full mr-3">
+                            <div>
+                                <p class="font-medium">Receta de María García</p>
+                                <p class="text-sm text-gray-600">Publicada el 15 de marzo de 2025</p>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-2 mb-6">
+                            <span class="bg-accent bg-opacity-20 text-dark px-3 py-1 rounded-full text-sm font-medium">España</span>
+                            <span class="bg-accent bg-opacity-20 text-dark px-3 py-1 rounded-full text-sm font-medium">Arroces</span>
+                            <span class="bg-accent bg-opacity-20 text-dark px-3 py-1 rounded-full text-sm font-medium">Plato principal</span>
+                            <span class="bg-accent bg-opacity-20 text-dark px-3 py-1 rounded-full text-sm font-medium">Mediterráneo</span>
+                        </div>
+                    </div>
+
+                    <!-- Galería de Imágenes -->
+                    <div class="mb-10">
+                        <div class="grid grid-cols-4 gap-4">
+                            <div class="col-span-4">
+                                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Valenciana" class="w-full h-96 object-cover rounded-lg">
+                            </div>
+                            <div class="col-span-1">
+                                <img src="https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Valenciana" class="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-all duration-300">
+                            </div>
+                            <div class="col-span-1">
+                                <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Valenciana" class="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-all duration-300">
+                            </div>
+                            <div class="col-span-1">
+                                <img src="../img/paella-valencianca.jpg" alt="Paella Valenciana" class="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-all duration-300">
+                            </div>
+                            <div class="col-span-1 relative">
+                                <img src="https://images.unsplash.com/photo-1607118750694-1469a22ef45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Valenciana" class="w-full h-24 object-cover rounded-lg cursor-pointer hover:opacity-80 transition-all duration-300">
+                                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center rounded-lg">
+                                    <span class="text-white font-medium">+3</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Descripción -->
+                    <div class="mb-10">
+                        <h2 class="text-2xl font-bold text-dark mb-4">Sobre esta receta</h2>
+                        <p class="text-gray-700 mb-4">La paella valenciana es uno de los platos más emblemáticos de la gastronomía española, originaria de la región de Valencia. Esta receta tradicional combina el arroz con carnes de pollo y conejo, verduras de la huerta valenciana y el característico azafrán que le da su color dorado.</p>
+                        <p class="text-gray-700 mb-4">La clave de una buena paella está en el punto del arroz, que debe quedar suelto y con el característico "socarrat" (costra tostada) en el fondo. Tradicionalmente se cocina en una paellera (sartén ancha y plana) sobre fuego abierto, aunque esta versión está adaptada para cocinarla en casa.</p>
+                        <p class="text-gray-700">Esta receta ha sido transmitida en mi familia por generaciones y representa la auténtica tradición valenciana. ¡Espero que la disfrutes tanto como nosotros!</p>
+                    </div>
+
+                    <!-- Pestañas -->
+                    <div class="mb-10">
+                        <div class="border-b border-gray-200">
+                            <div class="flex">
+                                <button id="tabIngredientes" class="tab active">Ingredientes</button>
+                                <button id="tabPreparacion" class="tab">Preparación</button>
+                                <button id="tabNotas" class="tab">Notas y consejos</button>
+                            </div>
+                        </div>
+
+                        <!-- Contenido de Pestañas -->
+                        <div class="py-6">
+                            <!-- Ingredientes -->
+                            <div id="contentIngredientes" class="tab-content">
+                                <ul class="divide-y divide-gray-200">
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">400g de arroz bomba o arroz redondo</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">300g de pollo troceado</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">200g de conejo troceado</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">150g de judías verdes planas</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">100g de garrofón (o judías blancas)</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">1 tomate maduro rallado</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">1 pimiento rojo</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">Azafrán (una pizca) o colorante alimentario</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">1 cucharadita de pimentón dulce</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">Aceite de oliva virgen extra</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">Sal al gusto</span>
+                                    </li>
+                                    <li class="ingredient-item">
+                                        <span class="w-8 h-8 rounded-full bg-accent bg-opacity-20 flex items-center justify-center mr-4">
+                                            <i class="fas fa-check text-primary"></i>
+                                        </span>
+                                        <span class="font-medium">1,2 litros de caldo de pollo o agua</span>
+                                    </li>
+                                </ul>
+                            </div>
+
+                            <!-- Preparación -->
+                            <div id="contentPreparacion" class="tab-content hidden">
+                                <ol class="divide-y divide-gray-200">
+                                    <li class="step-item">
+                                        <div class="step-number">1</div>
+                                        <div>
+                                            <p class="text-gray-700">Calienta aceite de oliva en la paellera a fuego medio-alto. Añade el pollo y el conejo troceados, sazona con sal y cocina hasta que estén dorados por todos lados, aproximadamente 10 minutos.</p>
+                                        </div>
+                                    </li>
+                                    <li class="step-item">
+                                        <div class="step-number">2</div>
+                                        <div>
+                                            <p class="text-gray-700">Añade las judías verdes y el garrofón (o judías blancas). Cocina durante 5 minutos más, removiendo ocasionalmente.</p>
+                                        </div>
+                                    </li>
+                                    <li class="step-item">
+                                        <div class="step-number">3</div>
+                                        <div>
+                                            <p class="text-gray-700">Incorpora el pimiento rojo cortado en tiras y cocina durante 3 minutos más.</p>
+                                        </div>
+                                    </li>
+                                    <li class="step-item">
+                                        <div class="step-number">4</div>
+                                        <div>
+                                            <p class="text-gray-700">Añade el tomate rallado y cocina durante 2 minutos hasta que se evapore el agua.</p>
+                                        </div>
+                                    </li>
+                                    <li class="step-item">
+                                        <div class="step-number">5</div>
+                                        <div>
+                                            <p class="text-gray-700">Agrega el pimentón dulce, remueve rápidamente e inmediatamente añade el caldo o agua caliente para evitar que el pimentón se queme.</p>
+                                        </div>
+                                    </li>
+                                    <li class="step-item">
+                                        <div class="step-number">6</div>
+                                        <div>
+                                            <p class="text-gray-700">Añade el azafrán o colorante alimentario y ajusta de sal. Deja hervir durante 5 minutos a fuego alto.</p>
+                                        </div>
+                                    </li>
+                                    <li class="step-item">
+                                        <div class="step-number">7</div>
+                                        <div>
+                                            <p class="text-gray-700">Añade el arroz, distribuyéndolo uniformemente por toda la paellera. Cocina a fuego alto durante 10 minutos.</p>
+                                        </div>
+                                    </li>
+                                    <li class="step-item">
+                                        <div class="step-number">8</div>
+                                        <div>
+                                            <p class="text-gray-700">Baja el fuego a medio-bajo y cocina durante 8 minutos más sin remover el arroz.</p>
+                                        </div>
+                                    </li>
+                                    <li class="step-item">
+                                        <div class="step-number">9</div>
+                                        <div>
+                                            <p class="text-gray-700">Apaga el fuego, cubre la paellera con un paño limpio y deja reposar durante 5 minutos antes de servir.</p>
+                                        </div>
+                                    </li>
+                                </ol>
+                            </div>
+
+                            <!-- Notas y consejos -->
+                            <div id="contentNotas" class="tab-content hidden">
+                                <div class="bg-accent bg-opacity-10 p-6 rounded-lg mb-6">
+                                    <h3 class="text-lg font-bold text-dark mb-3">Consejos del chef</h3>
+                                    <ul class="space-y-3 text-gray-700">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                            <span>El arroz bomba es el ideal para la paella porque absorbe bien el sabor y no se pasa.</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                            <span>No remuevas el arroz una vez que lo hayas añadido al caldo, esto ayuda a conseguir el "socarrat".</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                            <span>La proporción de líquido y arroz es importante: generalmente 2,5 partes de caldo por 1 de arroz.</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                            <span>Si no encuentras garrofón, puedes sustituirlo por judías blancas o habas.</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-check-circle text-primary mt-1 mr-3"></i>
+                                            <span>Tradicionalmente, la paella valenciana no lleva mariscos ni pescado.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+
+                                <div class="bg-secondary bg-opacity-10 p-6 rounded-lg">
+                                    <h3 class="text-lg font-bold text-dark mb-3">Variaciones</h3>
+                                    <ul class="space-y-3 text-gray-700">
+                                        <li class="flex items-start">
+                                            <i class="fas fa-utensils text-secondary mt-1 mr-3"></i>
+                                            <span>Paella mixta: añade mariscos como gambas, mejillones y calamares.</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-utensils text-secondary mt-1 mr-3"></i>
+                                            <span>Paella vegetariana: sustituye las carnes por más verduras como alcachofas, pimientos y champiñones.</span>
+                                        </li>
+                                        <li class="flex items-start">
+                                            <i class="fas fa-utensils text-secondary mt-1 mr-3"></i>
+                                            <span>Paella de marisco: utiliza solo mariscos y un caldo de pescado.</span>
+                                        </li>
+                                    </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información Nutricional -->
+                    <div class="mb-10">
+                        <h2 class="text-2xl font-bold text-dark mb-4">Información Nutricional</h2>
+                        <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                            <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                                <div class="text-2xl font-bold text-primary mb-1">320</div>
+                                <div class="text-sm text-gray-600">Calorías</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                                <div class="text-2xl font-bold text-primary mb-1">12g</div>
+                                <div class="text-sm text-gray-600">Proteínas</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                                <div class="text-2xl font-bold text-primary mb-1">45g</div>
+                                <div class="text-sm text-gray-600">Carbohidratos</div>
+                            </div>
+                            <div class="bg-white p-4 rounded-lg shadow-sm text-center">
+                                <div class="text-2xl font-bold text-primary mb-1">8g</div>
+                                <div class="text-sm text-gray-600">Grasas</div>
+                            </div>
+                        </div>
+                        <p class="text-sm text-gray-600 mt-3">*Valores aproximados por porción.</p>
+                    </div>
+
+                    <!-- Comentarios y Valoraciones -->
+                    <div>
+                        <h2 class="text-2xl font-bold text-dark mb-4">Comentarios y Valoraciones</h2>
+                        
+                        <!-- Formulario de Comentario -->
+                        <div class="bg-white p-6 rounded-lg shadow-sm mb-6">
+                            <h3 class="text-lg font-bold text-dark mb-4">Deja tu comentario</h3>
+                            <div class="mb-4">
+                                <label class="block text-gray-700 font-medium mb-2">Tu valoración</label>
+                                <div class="flex">
+                                    <button class="text-2xl text-gray-300 hover:text-accent focus:outline-none mr-1"><i class="fas fa-star"></i></button>
+                                    <button class="text-2xl text-gray-300 hover:text-accent focus:outline-none mr-1"><i class="fas fa-star"></i></button>
+                                    <button class="text-2xl text-gray-300 hover:text-accent focus:outline-none mr-1"><i class="fas fa-star"></i></button>
+                                    <button class="text-2xl text-gray-300 hover:text-accent focus:outline-none mr-1"><i class="fas fa-star"></i></button>
+                                    <button class="text-2xl text-gray-300 hover:text-accent focus:outline-none"><i class="fas fa-star"></i></button>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="comment" class="block text-gray-700 font-medium mb-2">Tu comentario</label>
+                                <textarea id="comment" rows="4" class="input-field" placeholder="Comparte tu experiencia con esta receta..."></textarea>
+                            </div>
+                            <button class="btn-primary">Publicar comentario</button>
+                        </div>
+                        
+                        <!-- Lista de Comentarios -->
+                        <div class="bg-white rounded-lg shadow-sm">
+                            <div class="comment-item">
+                                <div class="flex justify-between mb-2">
+                                    <div class="flex items-center">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Usuario" class="w-10 h-10 rounded-full mr-3">
+                                        <div>
+                                            <p class="font-medium">Carlos Rodríguez</p>
+                                            <p class="text-sm text-gray-600">Hace 2 días</p>
+                                        </div>
+                                    </div>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700">¡Excelente receta! La preparé el fin de semana para mi familia y quedaron encantados. El arroz quedó en su punto y el socarrat delicioso. Seguiré tus consejos para futuras paellas.</p>
+                            </div>
+                            
+                            <div class="comment-item">
+                                <div class="flex justify-between mb-2">
+                                    <div class="flex items-center">
+                                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Usuario" class="w-10 h-10 rounded-full mr-3">
+                                        <div>
+                                            <p class="font-medium">Laura Martínez</p>
+                                            <p class="text-sm text-gray-600">Hace 1 semana</p>
+                                        </div>
+                                    </div>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700">Muy buena receta, aunque tuve que ajustar un poco la cantidad de caldo porque mi arroz necesitaba más líquido. El sabor es auténtico y me recordó a mi viaje a Valencia. ¡Gracias por compartirla!</p>
+                            </div>
+                            
+                            <div class="comment-item">
+                                <div class="flex justify-between mb-2">
+                                    <div class="flex items-center">
+                                        <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Usuario" class="w-10 h-10 rounded-full mr-3">
+                                        <div>
+                                            <p class="font-medium">Miguel Ángel Pérez</p>
+                                            <p class="text-sm text-gray-600">Hace 2 semanas</p>
+                                        </div>
+                                    </div>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <p class="text-gray-700">Como valenciano, aprecio que compartas una receta tradicional. Aunque en mi familia solemos añadir también alcachofas cuando están en temporada. El resultado fue bastante bueno, pero me faltó un poco más de sabor en el arroz.</p>
+                            </div>
+                        </div>
+                        
+                        <!-- Paginación -->
+                        <div class="flex justify-center mt-6">
+                            <a href="#" class="pagination-item active">1</a>
+                            <a href="#" class="pagination-item">2</a>
+                            <a href="#" class="pagination-item">3</a>
+                            <span class="px-3 py-1 mx-1">...</span>
+                            <a href="#" class="pagination-item">8</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Barra Lateral -->
+                <div class="lg:w-1/3">
+                    <!-- Acciones -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+                        <div class="flex flex-wrap gap-3 mb-6">
+                            <button class="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg transition-all duration-300">
+                                <i class="far fa-bookmark mr-2"></i>
+                                <span>Guardar</span>
+                            </button>
+                            <button class="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg transition-all duration-300">
+                                <i class="fas fa-print mr-2"></i>
+                                <span>Imprimir</span>
+                            </button>
+                            <button class="flex items-center justify-center bg-gray-100 hover:bg-gray-200 text-gray-700 py-2 px-4 rounded-lg transition-all duration-300">
+                                <i class="fas fa-share-alt mr-2"></i>
+                                <span>Compartir</span>
+                            </button>
+                        </div>
+                        <div class="border-t border-gray-200 pt-6">
+                            <h3 class="font-bold text-dark mb-4">Compartir en redes</h3>
+                            <div class="flex gap-3">
+                                <a href="#" class="w-10 h-10 rounded-full bg-blue-600 text-white flex items-center justify-center hover:bg-opacity-90 transition-all duration-300">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-blue-400 text-white flex items-center justify-center hover:bg-opacity-90 transition-all duration-300">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-red-600 text-white flex items-center justify-center hover:bg-opacity-90 transition-all duration-300">
+                                    <i class="fab fa-pinterest"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-green-600 text-white flex items-center justify-center hover:bg-opacity-90 transition-all duration-300">
+                                    <i class="fab fa-whatsapp"></i>
+                                </a>
+                                <a href="#" class="w-10 h-10 rounded-full bg-blue-800 text-white flex items-center justify-center hover:bg-opacity-90 transition-all duration-300">
+                                    <i class="fab fa-telegram-plane"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Chef -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+                        <div class="flex items-center mb-4">
+                            <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Chef" class="w-16 h-16 rounded-full mr-4">
+                            <div>
+                                <h3 class="font-bold text-dark">María García</h3>
+                                <p class="text-gray-600">Chef especializada en cocina mediterránea</p>
+                            </div>
+                        </div>
+                        <p class="text-gray-700 mb-4">Apasionada de la gastronomía española y mediterránea. Comparto recetas tradicionales con un toque personal.</p>
+                        <div class="flex justify-between text-sm text-gray-600 mb-4">
+                            <span>124 recetas</span>
+                            <span>3.2k seguidores</span>
+                        </div>
+                        <button class="btn-secondary w-full">Seguir Chef</button>
+                    </div>
+                    
+                    <!-- Recetas Relacionadas -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm mb-8">
+                        <h3 class="font-bold text-dark mb-4">Recetas Relacionadas</h3>
+                        
+                        <div class="space-y-4">
+                            <a href="#" class="flex items-center group">
+                                <img src="https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Arroz Negro" class="w-20 h-20 object-cover rounded-lg mr-3 group-hover:opacity-90 transition-all duration-300">
+                                <div>
+                                    <h4 class="font-medium text-dark group-hover:text-primary transition-all duration-300">Arroz Negro con Sepia</h4>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            <a href="#" class="flex items-center group">
+                                <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fideuá" class="w-20 h-20 object-cover rounded-lg mr-3 group-hover:opacity-90 transition-all duration-300">
+                                <div>
+                                    <h4 class="font-medium text-dark group-hover:text-primary transition-all duration-300">Fideuá Valenciana</h4>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                            </a>
+                            
+                            <a href="#" class="flex items-center group">
+                                <img src="../img/paella-valencianca.jpg" alt="Paella de Marisco" class="w-20 h-20 object-cover rounded-lg mr-3 group-hover:opacity-90 transition-all duration-300">
+                                <div>
+                                    <h4 class="font-medium text-dark group-hover:text-primary transition-all duration-300">Paella de Marisco</h4>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                            </a>
+                        </div>
+                        
+                        <a href="categorias.html#europe" class="text-primary font-medium hover:underline block text-center mt-4">Ver más recetas españolas</a>
+                    </div>
+                    
+                    <!-- Tags Populares -->
+                    <div class="bg-white p-6 rounded-lg shadow-sm">
+                        <h3 class="font-bold text-dark mb-4">Tags Populares</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Arroces</a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Cocina española</a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Mediterráneo</a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Plato principal</a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Tradicional</a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Valencia</a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Pollo</a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Conejo</a>
+                            <a href="#" class="bg-gray-100 hover:bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm transition-all duration-300">Azafrán</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Columna 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Sabores del Mundo</h3>
+                    <p class="text-gray-300 mb-4">Plataforma global para compartir y descubrir recetas auténticas de todas las culturas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna 2 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="../index.html" class="text-gray-300 hover:text-primary transition-all duration-300">Inicio</a></li>
+                        <li><a href="categorias.html" class="text-gray-300 hover:text-primary transition-all duration-300">Categorías</a></li>
+                        <li><a href="comunidad.html" class="text-gray-300 hover:text-primary transition-all duration-300">Comunidad</a></li>
+                        <li><a href="contacto.html" class="text-gray-300 hover:text-primary transition-all duration-300">Contacto</a></li>
+                        <li><a href="subir-receta.html" class="text-gray-300 hover:text-primary transition-all duration-300">Subir Receta</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 3 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Categorías Populares</h3>
+                    <ul class="space-y-2">
+                        <li><a href="categorias.html#postres" class="text-gray-300 hover:text-primary transition-all duration-300">Postres</a></li>
+                        <li><a href="categorias.html#vegetariano" class="text-gray-300 hover:text-primary transition-all duration-300">Vegetariano</a></li>
+                        <li><a href="categorias.html#carnes" class="text-gray-300 hover:text-primary transition-all duration-300">Carnes</a></li>
+                        <li><a href="categorias.html#mariscos" class="text-gray-300 hover:text-primary transition-all duration-300">Mariscos</a></li>
+                        <li><a href="categorias.html#sopas" class="text-gray-300 hover:text-primary transition-all duration-300">Sopas</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 4 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">Calle Lope de Vega, 4 , España</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">info@saboresdelmundo.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">+34 912 345 678</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Política de Privacidad</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Términos de Uso</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Modal de Login -->
+    <div id="loginModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-dark">Iniciar Sesión</h3>
+                <button id="closeLoginBtn" class="text-gray-500 hover:text-dark focus:outline-none">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form>
+                <div class="mb-4">
+                    <label for="email" class="block text-gray-700 font-medium mb-2">Correo Electrónico</label>
+                    <input type="email" id="email" class="input-field" placeholder="tu@email.com">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="password" class="block text-gray-700 font-medium mb-2">Contraseña</label>
+                    <input type="password" id="password" class="input-field" placeholder="••••••••">
+                </div>
+                
+                <div class="flex justify-between items-center mb-6">
+                    <div class="flex items-center">
+                        <input type="checkbox" id="remember" class="mr-2">
+                        <label for="remember" class="text-gray-700">Recordarme</label>
+                    </div>
+                    <a href="#" class="text-primary hover:underline">¿Olvidaste tu contraseña?</a>
+                </div>
+                
+                <button type="submit" class="btn-primary w-full mb-4">Iniciar Sesión</button>
+                
+                <div class="text-center">
+                    <p class="text-gray-700">¿No tienes cuenta? <a href="#" id="showRegisterBtn" class="text-primary hover:underline">Regístrate</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Modal de Registro -->
+    <div id="registerModal" class="fixed inset-0 bg-black bg-opacity-50 z-50 flex items-center justify-center hidden">
+        <div class="bg-white rounded-xl p-8 max-w-md w-full">
+            <div class="flex justify-between items-center mb-6">
+                <h3 class="text-2xl font-bold text-dark">Crear Cuenta</h3>
+                <button id="closeRegisterBtn" class="text-gray-500 hover:text-dark focus:outline-none">
+                    <i class="fas fa-times text-xl"></i>
+                </button>
+            </div>
+            
+            <form>
+                <div class="grid grid-cols-2 gap-4 mb-4">
+                    <div>
+                        <label for="firstName" class="block text-gray-700 font-medium mb-2">Nombre</label>
+                        <input type="text" id="firstName" class="input-field" placeholder="Tu nombre">
+                    </div>
+                    <div>
+                        <label for="lastName" class="block text-gray-700 font-medium mb-2">Apellido</label>
+                        <input type="text" id="lastName" class="input-field" placeholder="Tu apellido">
+                    </div>
+                </div>
+                
+                <div class="mb-4">
+                    <label for="registerEmail" class="block text-gray-700 font-medium mb-2">Correo Electrónico</label>
+                    <input type="email" id="registerEmail" class="input-field" placeholder="tu@email.com">
+                </div>
+                
+                <div class="mb-4">
+                    <label for="registerPassword" class="block text-gray-700 font-medium mb-2">Contraseña</label>
+                    <input type="password" id="registerPassword" class="input-field" placeholder="Mínimo 8 caracteres">
+                </div>
+                
+                <div class="mb-6">
+                    <label for="confirmPassword" class="block text-gray-700 font-medium mb-2">Confirmar Contraseña</label>
+                    <input type="password" id="confirmPassword" class="input-field" placeholder="Confirma tu contraseña">
+                </div>
+                
+                <div class="flex items-center mb-6">
+                    <input type="checkbox" id="terms" class="mr-2">
+                    <label for="terms" class="text-gray-700">Acepto los <a href="#" class="text-primary hover:underline">Términos y Condiciones</a></label>
+                </div>
+                
+                <button type="submit" class="btn-primary w-full mb-4">Crear Cuenta</button>
+                
+                <div class="text-center">
+                    <p class="text-gray-700">¿Ya tienes cuenta? <a href="#" id="showLoginBtn" class="text-primary hover:underline">Inicia Sesión</a></p>
+                </div>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

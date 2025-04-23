@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subir Receta | Sabores del Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#FF6B35',
+                        'secondary': '#2EC4B6',
+                        'accent': '#FFBF69',
+                        'dark': '#1A535C',
+                        'light': '#F7FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .btn-secondary {
+                @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .card {
+                @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300;
+            }
+            
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold text-dark mb-6;
+            }
+            
+            .container-custom {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+
+            .star-rating {
+                @apply flex items-center;
+            }
+
+            .star {
+                @apply text-gray-300 text-xl;
+            }
+
+            .star.filled {
+                @apply text-accent;
+            }
+
+            .nav-link {
+                @apply text-dark hover:text-primary transition-all duration-300;
+            }
+
+            .mobile-menu {
+                @apply fixed inset-0 bg-dark bg-opacity-90 z-50 transform transition-transform duration-300;
+            }
+
+            .pagination-item {
+                @apply px-3 py-1 rounded-md mx-1 bg-gray-200 hover:bg-primary hover:text-white transition-all duration-300;
+            }
+
+            .pagination-item.active {
+                @apply bg-primary text-white;
+            }
+
+            .form-label {
+                @apply block text-gray-700 font-medium mb-2;
+            }
+
+            .form-section {
+                @apply mb-8;
+            }
+
+            .form-section-title {
+                @apply text-xl font-bold text-dark mb-4;
+            }
+
+            .form-group {
+                @apply mb-4;
+            }
+
+            .tag-item {
+                @apply bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm font-medium flex items-center;
+            }
+
+            .tag-remove {
+                @apply ml-2 text-gray-500 hover:text-red-500 transition-all duration-300;
+            }
+
+            .dropzone {
+                @apply border-2 border-dashed border-gray-300 rounded-lg p-6 text-center cursor-pointer hover:border-primary transition-all duration-300;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- Navegación -->
+    <header class="bg-white shadow-md">
+        <div class="container-custom">
+            <nav class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-primary">Sabores</span>
+                        <span class="text-2xl font-bold text-dark">del Mundo</span>
+                    </a>
+                </div>
+
+                <!-- Navegación Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="nav-link font-medium">Inicio</a>
+                    <a href="categorias.html" class="nav-link font-medium">Categorías</a>
+                    <a href="comunidad.html" class="nav-link font-medium">Comunidad</a>
+                    <a href="contacto.html" class="nav-link font-medium">Contacto</a>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="subir-receta.html" class="btn-secondary">
+                        <i class="fas fa-plus mr-2"></i>Subir Receta
+                    </a>
+                    <div class="relative">
+                        <button id="profileDropdown" class="flex items-center focus:outline-none">
+                            <img src="../img/homer.jpg" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-primary">
+                        </button>
+                        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden">
+                            <a href="perfil.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                            <a href="subir-receta.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mis Recetas</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Favoritos</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Configuración</a>
+                            <div class="border-t border-gray-200 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menú Hamburguesa (Móvil) -->
+                <div class="md:hidden">
+                    <button id="menuBtn" class="text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menú Móvil -->
+    <div id="mobileMenu" class="mobile-menu translate-x-full md:hidden">
+        <div class="flex flex-col h-full p-8">
+            <div class="flex justify-end">
+                <button id="closeMenuBtn" class="text-white focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-8 mt-16">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="../img/homer.jpg" alt="Perfil" class="w-20 h-20 rounded-full border-2 border-primary mb-2">
+                    <h3 class="text-white font-medium">Pedro Picapiedra</h3>
+                </div>
+                <a href="../index.html" class="text-white text-xl hover:text-primary transition-all duration-300">Inicio</a>
+                <a href="categorias.html" class="text-white text-xl hover:text-primary transition-all duration-300">Categorías</a>
+                <a href="comunidad.html" class="text-white text-xl hover:text-primary transition-all duration-300">Comunidad</a>
+                <a href="contacto.html" class="text-white text-xl hover:text-primary transition-all duration-300">Contacto</a>
+                <a href="perfil.html" class="text-white text-xl hover:text-primary transition-all duration-300">Mi Perfil</a>
+                <a href="subir-receta.html" class="btn-secondary w-full text-center">
+                    <i class="fas fa-plus mr-2"></i>Subir Receta
+                </a>
+                <a href="#" class="text-white text-xl hover:text-primary transition-all duration-300">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-100 py-3">
+        <div class="container-custom">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="../index.html" class="hover:text-primary">Inicio</a>
+                <span class="mx-2">/</span>
+                <span class="text-primary font-medium">Subir Receta</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="py-12">
+        <div class="container-custom">
+            <h1 class="section-title text-center mb-10">Compartir Nueva Receta</h1>
+            
+            <div class="max-w-4xl mx-auto">
+                <!-- Formulario de Receta -->
+                <form class="bg-white rounded-xl shadow-md p-8">
+                    <!-- Información Básica -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Información Básica</h2>
+                        
+                        <div class="form-group">
+                            <label for="titulo" class="form-label">Título de la Receta <span class="text-red-500">*</span></label>
+                            <input type="text" id="titulo" class="input-field" placeholder="Ej. Paella Valenciana Tradicional">
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                            <div class="form-group">
+                                <label for="categoria" class="form-label">Categoría <span class="text-red-500">*</span></label>
+                                <select id="categoria" class="input-field">
+                                    <option value="">Seleccionar categoría</option>
+                                    <option value="entrante">Entrante</option>
+                                    <option value="principal">Plato principal</option>
+                                    <option value="postre">Postre</option>
+                                    <option value="bebida">Bebida</option>
+                                    <option value="aperitivo">Aperitivo</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="origen" class="form-label">País de Origen <span class="text-red-500">*</span></label>
+                                <select id="origen" class="input-field">
+                                    <option value="">Seleccionar país</option>
+                                    <option value="espana">España</option>
+                                    <option value="italia">Italia</option>
+                                    <option value="francia">Francia</option>
+                                    <option value="mexico">México</option>
+                                    <option value="japon">Japón</option>
+                                    <option value="china">China</option>
+                                    <option value="india">India</option>
+                                    <option value="tailandia">Tailandia</option>
+                                    <option value="peru">Perú</option>
+                                    <option value="argentina">Argentina</option>
+                                    <option value="otros">Otros</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                            <div class="form-group">
+                                <label for="tiempo" class="form-label">Tiempo de Preparación <span class="text-red-500">*</span></label>
+                                <div class="flex">
+                                    <input type="number" id="tiempo" class="input-field" placeholder="Ej. 60">
+                                    <select class="border border-gray-300 rounded-lg ml-2 px-2">
+                                        <option value="minutos">minutos</option>
+                                        <option value="horas">horas</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="dificultad" class="form-label">Dificultad <span class="text-red-500">*</span></label>
+                                <select id="dificultad" class="input-field">
+                                    <option value="">Seleccionar dificultad</option>
+                                    <option value="facil">Fácil</option>
+                                    <option value="media">Media</option>
+                                    <option value="dificil">Difícil</option>
+                                </select>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="porciones" class="form-label">Porciones <span class="text-red-500">*</span></label>
+                                <input type="number" id="porciones" class="input-field" placeholder="Ej. 4">
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="descripcion" class="form-label">Descripción <span class="text-red-500">*</span></label>
+                            <textarea id="descripcion" rows="4" class="input-field" placeholder="Describe brevemente tu receta, su origen, historia o cualquier dato interesante..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Imágenes -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Imágenes</h2>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Imagen Principal <span class="text-red-500">*</span></label>
+                            <div class="dropzone" id="dropzoneMain">
+                                <div class="flex flex-col items-center">
+                                    <i class="fas fa-cloud-upload-alt text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-600 mb-1">Arrastra y suelta tu imagen aquí</p>
+                                    <p class="text-gray-500 text-sm mb-2">o</p>
+                                    <button type="button" class="bg-gray-200 text-gray-700 font-medium py-1 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                        Seleccionar archivo
+                                    </button>
+                                    <p class="text-gray-500 text-xs mt-2">PNG, JPG o JPEG (máx. 5MB)</p>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Imágenes Adicionales</label>
+                            <div class="dropzone" id="dropzoneAdditional">
+                                <div class="flex flex-col items-center">
+                                    <i class="fas fa-images text-4xl text-gray-400 mb-2"></i>
+                                    <p class="text-gray-600 mb-1">Arrastra y suelta tus imágenes aquí</p>
+                                    <p class="text-gray-500 text-sm mb-2">o</p>
+                                    <button type="button" class="bg-gray-200 text-gray-700 font-medium py-1 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                        Seleccionar archivos
+                                    </button>
+                                    <p class="text-gray-500 text-xs mt-2">Puedes subir hasta 5 imágenes adicionales</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Ingredientes -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Ingredientes <span class="text-red-500">*</span></h2>
+                        
+                        <div id="ingredientes-container">
+                            <div class="grid grid-cols-12 gap-4 mb-2">
+                                <div class="col-span-6 md:col-span-7">
+                                    <label class="form-label sr-only">Ingrediente</label>
+                                    <input type="text" class="input-field" placeholder="Ej. Arroz bomba">
+                                </div>
+                                <div class="col-span-3 md:col-span-3">
+                                    <label class="form-label sr-only">Cantidad</label>
+                                    <input type="text" class="input-field" placeholder="Ej. 400">
+                                </div>
+                                <div class="col-span-3 md:col-span-2">
+                                    <label class="form-label sr-only">Unidad</label>
+                                    <select class="input-field">
+                                        <option value="g">g</option>
+                                        <option value="kg">kg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="l">l</option>
+                                        <option value="cucharada">cucharada</option>
+                                        <option value="cucharadita">cucharadita</option>
+                                        <option value="taza">taza</option>
+                                        <option value="unidad">unidad</option>
+                                        <option value="al gusto">al gusto</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-12 gap-4 mb-2">
+                                <div class="col-span-6 md:col-span-7">
+                                    <input type="text" class="input-field" placeholder="Ej. Pollo troceado">
+                                </div>
+                                <div class="col-span-3 md:col-span-3">
+                                    <input type="text" class="input-field" placeholder="Ej. 300">
+                                </div>
+                                <div class="col-span-3 md:col-span-2">
+                                    <select class="input-field">
+                                        <option value="g">g</option>
+                                        <option value="kg">kg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="l">l</option>
+                                        <option value="cucharada">cucharada</option>
+                                        <option value="cucharadita">cucharadita</option>
+                                        <option value="taza">taza</option>
+                                        <option value="unidad">unidad</option>
+                                        <option value="al gusto">al gusto</option>
+                                    </select>
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-12 gap-4 mb-2">
+                                <div class="col-span-6 md:col-span-7">
+                                    <input type="text" class="input-field" placeholder="Ej. Azafrán">
+                                </div>
+                                <div class="col-span-3 md:col-span-3">
+                                    <input type="text" class="input-field" placeholder="Ej. 1">
+                                </div>
+                                <div class="col-span-3 md:col-span-2">
+                                    <select class="input-field">
+                                        <option value="g">g</option>
+                                        <option value="kg">kg</option>
+                                        <option value="ml">ml</option>
+                                        <option value="l">l</option>
+                                        <option value="cucharada">cucharada</option>
+                                        <option value="cucharadita">cucharadita</option>
+                                        <option value="taza">taza</option>
+                                        <option value="unidad">unidad</option>
+                                        <option value="al gusto">al gusto</option>
+                                        <option value="pizca" selected>pizca</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="add-ingrediente" class="flex items-center text-primary font-medium hover:underline mt-2">
+                            <i class="fas fa-plus-circle mr-2"></i>Añadir ingrediente
+                        </button>
+                    </div>
+                    
+                    <!-- Preparación -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Preparación <span class="text-red-500">*</span></h2>
+                        
+                        <div id="pasos-container">
+                            <div class="form-group">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4">
+                                        1
+                                    </div>
+                                    <div class="flex-grow">
+                                        <textarea rows="3" class="input-field" placeholder="Describe el primer paso de la preparación..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4">
+                                        2
+                                    </div>
+                                    <div class="flex-grow">
+                                        <textarea rows="3" class="input-field" placeholder="Describe el segundo paso de la preparación..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <div class="flex items-start">
+                                    <div class="flex-shrink-0 w-8 h-8 rounded-full bg-primary text-white flex items-center justify-center font-bold mr-4">
+                                        3
+                                    </div>
+                                    <div class="flex-grow">
+                                        <textarea rows="3" class="input-field" placeholder="Describe el tercer paso de la preparación..."></textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <button type="button" id="add-paso" class="flex items-center text-primary font-medium hover:underline mt-2">
+                            <i class="fas fa-plus-circle mr-2"></i>Añadir paso
+                        </button>
+                    </div>
+                    
+                    <!-- Notas y Consejos -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Notas y Consejos</h2>
+                        
+                        <div class="form-group">
+                            <label for="consejos" class="form-label">Consejos del Chef</label>
+                            <textarea id="consejos" rows="4" class="input-field" placeholder="Comparte consejos, trucos o recomendaciones para preparar esta receta..."></textarea>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label for="variaciones" class="form-label">Variaciones</label>
+                            <textarea id="variaciones" rows="4" class="input-field" placeholder="Describe posibles variaciones o adaptaciones de la receta..."></textarea>
+                        </div>
+                    </div>
+                    
+                    <!-- Información Nutricional -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Información Nutricional (por porción)</h2>
+                        
+                        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+                            <div class="form-group">
+                                <label for="calorias" class="form-label">Calorías</label>
+                                <input type="number" id="calorias" class="input-field" placeholder="Ej. 320">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="proteinas" class="form-label">Proteínas (g)</label>
+                                <input type="number" id="proteinas" class="input-field" placeholder="Ej. 12">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="carbohidratos" class="form-label">Carbohidratos (g)</label>
+                                <input type="number" id="carbohidratos" class="input-field" placeholder="Ej. 45">
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="grasas" class="form-label">Grasas (g)</label>
+                                <input type="number" id="grasas" class="input-field" placeholder="Ej. 8">
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Etiquetas -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Etiquetas</h2>
+                        
+                        <div class="form-group">
+                            <label for="etiquetas" class="form-label">Etiquetas</label>
+                            <div class="flex flex-wrap gap-2 mb-2" id="tags-container">
+                                <div class="tag-item">
+                                    <span>Arroces</span>
+                                    <button type="button" class="tag-remove"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="tag-item">
+                                    <span>Cocina española</span>
+                                    <button type="button" class="tag-remove"><i class="fas fa-times"></i></button>
+                                </div>
+                                <div class="tag-item">
+                                    <span>Mediterráneo</span>
+                                    <button type="button" class="tag-remove"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <input type="text" id="etiquetas" class="input-field" placeholder="Añade etiquetas separadas por comas...">
+                                <button type="button" id="add-tag" class="bg-gray-200 text-gray-700 font-medium py-2 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300 ml-2">
+                                    Añadir
+                                </button>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Dietas Especiales</label>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-2">
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="vegetariano" class="mr-2">
+                                    <label for="vegetariano" class="text-gray-700">Vegetariano</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="vegano" class="mr-2">
+                                    <label for="vegano" class="text-gray-700">Vegano</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="sinGluten" class="mr-2">
+                                    <label for="sinGluten" class="text-gray-700">Sin gluten</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="sinLactosa" class="mr-2">
+                                    <label for="sinLactosa" class="text-gray-700">Sin lactosa</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="bajoCalorias" class="mr-2">
+                                    <label for="bajoCalorias" class="text-gray-700">Bajo en calorías</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="checkbox" id="keto" class="mr-2">
+                                    <label for="keto" class="text-gray-700">Keto</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Opciones de Publicación -->
+                    <div class="form-section">
+                        <h2 class="form-section-title">Opciones de Publicación</h2>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Visibilidad</label>
+                            <div class="flex flex-col space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" id="publica" name="visibilidad" class="mr-2" checked>
+                                    <label for="publica" class="text-gray-700">Pública - Visible para todos los usuarios</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="privada" name="visibilidad" class="mr-2">
+                                    <label for="privada" class="text-gray-700">Privada - Solo visible para ti</label>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="form-group">
+                            <label class="form-label">Estado</label>
+                            <div class="flex flex-col space-y-2">
+                                <div class="flex items-center">
+                                    <input type="radio" id="publicar" name="estado" class="mr-2" checked>
+                                    <label for="publicar" class="text-gray-700">Publicar ahora</label>
+                                </div>
+                                <div class="flex items-center">
+                                    <input type="radio" id="borrador" name="estado" class="mr-2">
+                                    <label for="borrador" class="text-gray-700">Guardar como borrador</label>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Botones de Acción -->
+                    <div class="flex flex-col sm:flex-row justify-end gap-4 mt-8">
+                        <button type="button" class="bg-gray-200 text-gray-700 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                            Cancelar
+                        </button>
+                        <button type="button" class="bg-gray-200 text-gray-700 font-semibold py-2 px-6 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                            Vista Previa
+                        </button>
+                        <button type="submit" class="btn-primary py-2 px-6">
+                            Publicar Receta
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8 mt-12">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Columna 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Sabores del Mundo</h3>
+                    <p class="text-gray-300 mb-4">Plataforma global para compartir y descubrir recetas auténticas de todas las culturas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna 2 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="../index.html" class="text-gray-300 hover:text-primary transition-all duration-300">Inicio</a></li>
+                        <li><a href="categorias.html" class="text-gray-300 hover:text-primary transition-all duration-300">Categorías</a></li>
+                        <li><a href="comunidad.html" class="text-gray-300 hover:text-primary transition-all duration-300">Comunidad</a></li>
+                        <li><a href="contacto.html" class="text-gray-300 hover:text-primary transition-all duration-300">Contacto</a></li>
+                        <li><a href="subir-receta.html" class="text-gray-300 hover:text-primary transition-all duration-300">Subir Receta</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 3 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Categorías Populares</h3>
+                    <ul class="space-y-2">
+                        <li><a href="categorias.html#postres" class="text-gray-300 hover:text-primary transition-all duration-300">Postres</a></li>
+                        <li><a href="categorias.html#vegetariano" class="text-gray-300 hover:text-primary transition-all duration-300">Vegetariano</a></li>
+                        <li><a href="categorias.html#carnes" class="text-gray-300 hover:text-primary transition-all duration-300">Carnes</a></li>
+                        <li><a href="categorias.html#mariscos" class="text-gray-300 hover:text-primary transition-all duration-300">Mariscos</a></li>
+                        <li><a href="categorias.html#sopas" class="text-gray-300 hover:text-primary transition-all duration-300">Sopas</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 4 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">Calle Lope de Vega, 4 , España</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">info@saboresdelmundo.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">+34 912 345 678</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Política de Privacidad</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Términos de Uso</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

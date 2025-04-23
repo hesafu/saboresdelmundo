@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contacto | Sabores del Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#FF6B35',
+                        'secondary': '#2EC4B6',
+                        'accent': '#FFBF69',
+                        'dark': '#1A535C',
+                        'light': '#F7FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .btn-secondary {
+                @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .card {
+                @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300;
+            }
+            
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold text-dark mb-6;
+            }
+            
+            .container-custom {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+
+            .nav-link {
+                @apply text-dark hover:text-primary transition-all duration-300;
+            }
+
+            .mobile-menu {
+                @apply fixed inset-0 bg-dark bg-opacity-90 z-50 transform transition-transform duration-300;
+            }
+
+            .contact-info-item {
+                @apply flex items-start mb-6;
+            }
+
+            .contact-info-icon {
+                @apply text-primary text-xl mr-4 mt-1;
+            }
+
+            .contact-form-label {
+                @apply block text-gray-700 font-medium mb-2;
+            }
+
+            .contact-social-icon {
+                @apply w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center shadow-md hover:bg-primary hover:text-white transition-all duration-300;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- Navegación -->
+    <header class="bg-white shadow-md">
+        <div class="container-custom">
+            <nav class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-primary">Sabores</span>
+                        <span class="text-2xl font-bold text-dark">del Mundo</span>
+                    </a>
+                </div>
+
+                <!-- Navegación Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="nav-link font-medium">Inicio</a>
+                    <a href="categorias.html" class="nav-link font-medium">Categorías</a>
+                    <a href="comunidad.html" class="nav-link font-medium">Comunidad</a>
+                    <a href="contacto.html" class="nav-link font-medium text-primary">Contacto</a>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="subir-receta.html" class="btn-secondary">
+                        <i class="fas fa-plus mr-2"></i>Subir Receta
+                    </a>
+                    <div class="relative">
+                        <button id="profileDropdown" class="flex items-center focus:outline-none">
+                            <img src="../img/homer.jpg" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-primary">
+                        </button>
+                        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden">
+                            <a href="perfil.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                            <a href="subir-receta.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mis Recetas</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Favoritos</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Configuración</a>
+                            <div class="border-t border-gray-200 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menú Hamburguesa (Móvil) -->
+                <div class="md:hidden">
+                    <button id="menuBtn" class="text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menú Móvil -->
+    <div id="mobileMenu" class="mobile-menu translate-x-full md:hidden">
+        <div class="flex flex-col h-full p-8">
+            <div class="flex justify-end">
+                <button id="closeMenuBtn" class="text-white focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-8 mt-16">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="../img/homer.jpg" alt="Perfil" class="w-20 h-20 rounded-full border-2 border-primary mb-2">
+                    <h3 class="text-white font-medium">Pedro Picadpiedra</h3>
+                </div>
+                <a href="../index.html" class="text-white text-xl hover:text-primary transition-all duration-300">Inicio</a>
+                <a href="categorias.html" class="text-white text-xl hover:text-primary transition-all duration-300">Categorías</a>
+                <a href="comunidad.html" class="text-white text-xl hover:text-primary transition-all duration-300">Comunidad</a>
+                <a href="contacto.html" class="text-white text-xl hover:text-primary transition-all duration-300">Contacto</a>
+                <a href="perfil.html" class="text-white text-xl hover:text-primary transition-all duration-300">Mi Perfil</a>
+                <a href="subir-receta.html" class="btn-secondary w-full text-center">
+                    <i class="fas fa-plus mr-2"></i>Subir Receta
+                </a>
+                <a href="#" class="text-white text-xl hover:text-primary transition-all duration-300">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-gray-100 py-3">
+        <div class="container-custom">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="../index.html" class="hover:text-primary">Inicio</a>
+                <span class="mx-2">/</span>
+                <span class="text-primary font-medium">Contacto</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="py-12">
+        <div class="container-custom">
+            <h1 class="section-title text-center mb-10">Contacta con Nosotros</h1>
+            
+            <!-- Banner de Contacto -->
+            <div class="bg-primary bg-opacity-10 rounded-xl p-8 mb-12">
+                <div class="grid grid-cols-1 md:grid-cols-2 gap-8 items-center">
+                    <div>
+                        <h2 class="text-2xl font-bold text-dark mb-4">¿Tienes alguna pregunta o sugerencia?</h2>
+                        <p class="text-gray-600 mb-6">Estamos aquí para ayudarte. Nuestro equipo está disponible para responder a tus preguntas, escuchar tus sugerencias o resolver cualquier problema que puedas tener.</p>
+                        <div class="flex space-x-4">
+                            <a href="#formulario" class="btn-primary">Enviar mensaje</a>
+                            <a href="tel:+34912345678" class="btn-secondary">
+                                <i class="fas fa-phone mr-2"></i>Llamar ahora
+                            </a>
+                        </div>
+                    </div>
+                    <div class="hidden md:block">
+                        <img src="https://images.unsplash.com/photo-1577219491135-ce391730fb2c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Contacto" class="rounded-lg shadow-lg">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Información de Contacto y Formulario -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                <!-- Información de Contacto -->
+                <div class="lg:col-span-1">
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-xl font-bold text-dark mb-6">Información de Contacto</h3>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-map-marker-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-dark mb-1">Dirección</h4>
+                                <p class="text-gray-600">Calle Lope de Vega, 4<br>33204 Gijón, España</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-phone-alt"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-dark mb-1">Teléfono</h4>
+                                <p class="text-gray-600">+34 912 345 678</p>
+                                <p class="text-gray-600">+34 913 456 789</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-envelope"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-dark mb-1">Email</h4>
+                                <p class="text-gray-600">info@saboresdelmundo.com</p>
+                                <p class="text-gray-600">soporte@saboresdelmundo.com</p>
+                            </div>
+                        </div>
+                        
+                        <div class="contact-info-item">
+                            <div class="contact-info-icon">
+                                <i class="fas fa-clock"></i>
+                            </div>
+                            <div>
+                                <h4 class="font-semibold text-dark mb-1">Horario de Atención</h4>
+                                <p class="text-gray-600">Lunes a Viernes: 9:00 - 18:00</p>
+                                <p class="text-gray-600">Sábados: 10:00 - 14:00</p>
+                            </div>
+                        </div>
+                        
+                        <div class="mt-8">
+                            <h4 class="font-semibold text-dark mb-4">Síguenos en Redes Sociales</h4>
+                            <div class="flex space-x-3">
+                                <a href="#" class="contact-social-icon">
+                                    <i class="fab fa-facebook-f"></i>
+                                </a>
+                                <a href="#" class="contact-social-icon">
+                                    <i class="fab fa-twitter"></i>
+                                </a>
+                                <a href="#" class="contact-social-icon">
+                                    <i class="fab fa-instagram"></i>
+                                </a>
+                                <a href="#" class="contact-social-icon">
+                                    <i class="fab fa-pinterest"></i>
+                                </a>
+                                <a href="#" class="contact-social-icon">
+                                    <i class="fab fa-youtube"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Formulario de Contacto -->
+                <div class="lg:col-span-2" id="formulario">
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-xl font-bold text-dark mb-6">Envíanos un Mensaje</h3>
+                        
+                        <form>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label for="nombre" class="contact-form-label">Nombre</label>
+                                    <input type="text" id="nombre" class="input-field" placeholder="Tu nombre">
+                                </div>
+                                <div>
+                                    <label for="apellido" class="contact-form-label">Apellido</label>
+                                    <input type="text" id="apellido" class="input-field" placeholder="Tu apellido">
+                                </div>
+                            </div>
+                            
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
+                                <div>
+                                    <label for="email" class="contact-form-label">Email</label>
+                                    <input type="email" id="email" class="input-field" placeholder="Tu email">
+                                </div>
+                                <div>
+                                    <label for="telefono" class="contact-form-label">Teléfono</label>
+                                    <input type="tel" id="telefono" class="input-field" placeholder="Tu teléfono">
+                                </div>
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="asunto" class="contact-form-label">Asunto</label>
+                                <input type="text" id="asunto" class="input-field" placeholder="Asunto de tu mensaje">
+                            </div>
+                            
+                            <div class="mb-6">
+                                <label for="mensaje" class="contact-form-label">Mensaje</label>
+                                <textarea id="mensaje" rows="5" class="input-field" placeholder="Escribe tu mensaje aquí..."></textarea>
+                            </div>
+                            
+                            <div class="flex items-center mb-6">
+                                <input type="checkbox" id="politica" class="mr-2">
+                                <label for="politica" class="text-gray-600 text-sm">He leído y acepto la <a href="#" class="text-primary hover:underline">política de privacidad</a></label>
+                            </div>
+                            
+                            <button type="submit" class="btn-primary w-full md:w-auto">
+                                Enviar Mensaje
+                            </button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Mapa -->
+            <div class="mt-12">
+                <h3 class="text-xl font-bold text-dark mb-6">Nuestra Ubicación</h3>
+                <div class="bg-white rounded-xl shadow-md overflow-hidden h-96">
+                    <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d2892.61720533712!2d-5.656145623829621!3d43.53117462110816!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd367b7cf2b57d17%3A0x193db91ea4ee7575!2sTUNIVERS%20Formaci%C3%B3n%20Profesional!5e0!3m2!1ses!2ses!4v1744020477599!5m2!1ses!2ses" width="600" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>" width="100%" height="450" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade"></iframe>
+            
+            <!-- Preguntas Frecuentes -->
+            <div class="mt-16">
+                <h3 class="text-xl font-bold text-dark mb-6">Preguntas Frecuentes</h3>
+                
+                <div class="space-y-4">
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-button w-full text-left p-6 focus:outline-none">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-semibold text-dark">¿Cómo puedo registrarme en Sabores del Mundo?</h4>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">Para registrarte en Sabores del Mundo, haz clic en el botón "Registrarse" en la esquina superior derecha de la página. Completa el formulario con tu información personal y sigue las instrucciones para crear tu cuenta. Una vez registrado, podrás compartir tus recetas, guardar tus favoritas y participar en la comunidad.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-button w-full text-left p-6 focus:outline-none">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-semibold text-dark">¿Cómo puedo subir mis propias recetas?</h4>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">Para subir tus propias recetas, primero debes iniciar sesión en tu cuenta. Luego, haz clic en el botón "Subir Receta" en la barra de navegación. Completa el formulario con todos los detalles de tu receta, incluyendo ingredientes, instrucciones, tiempo de preparación y fotos. Una vez completado, haz clic en "Publicar" y tu receta estará disponible para toda la comunidad.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-button w-full text-left p-6 focus:outline-none">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-semibold text-dark">¿Puedo editar o eliminar mis recetas publicadas?</h4>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">Sí, puedes editar o eliminar tus recetas en cualquier momento. Para hacerlo, ve a tu perfil y selecciona "Mis Recetas". Junto a cada receta encontrarás opciones para editar o eliminar. Al editar, podrás modificar cualquier aspecto de tu receta, desde los ingredientes hasta las fotos.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-button w-full text-left p-6 focus:outline-none">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-semibold text-dark">¿Cómo puedo contactar con el equipo de soporte?</h4>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">Puedes contactar con nuestro equipo de soporte de varias maneras: a través del formulario de contacto en esta página, enviando un email a soporte@saboresdelmundo.com, o llamando al +34 912 345 678 durante nuestro horario de atención. También puedes enviarnos un mensaje directo a través de nuestras redes sociales.</p>
+                        </div>
+                    </div>
+                    
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden">
+                        <button class="faq-button w-full text-left p-6 focus:outline-none">
+                            <div class="flex justify-between items-center">
+                                <h4 class="font-semibold text-dark">¿Sabores del Mundo tiene aplicación móvil?</h4>
+                                <i class="fas fa-chevron-down text-primary transition-transform duration-300"></i>
+                            </div>
+                        </button>
+                        <div class="faq-answer px-6 pb-6 hidden">
+                            <p class="text-gray-600">Actualmente estamos desarrollando nuestra aplicación móvil para iOS y Android. Esperamos lanzarla en los próximos meses. Mientras tanto, nuestra web está completamente optimizada para dispositivos móviles, por lo que puedes acceder a todas las funcionalidades desde el navegador de tu teléfono o tablet.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Newsletter -->
+            <div class="mt-16 bg-primary bg-opacity-10 rounded-xl p-8">
+                <div class="text-center max-w-2xl mx-auto">
+                    <h3 class="text-2xl font-bold text-dark mb-4">Suscríbete a Nuestro Newsletter</h3>
+                    <p class="text-gray-600 mb-6">Recibe las últimas recetas, consejos culinarios y noticias gastronómicas directamente en tu bandeja de entrada.</p>
+                    <div class="flex flex-col sm:flex-row gap-4">
+                        <input type="email" class="input-field" placeholder="Tu email">
+                        <button class="btn-primary whitespace-nowrap">
+                            Suscribirse
+                        </button>
+                    </div>
+                    <p class="text-sm text-gray-500 mt-4">Al suscribirte, aceptas nuestra <a href="#" class="text-primary hover:underline">política de privacidad</a>.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8 mt-12">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Columna 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Sabores del Mundo</h3>
+                    <p class="text-gray-300 mb-4">Plataforma global para compartir y descubrir recetas auténticas de todas las culturas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna 2 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="../index.html" class="text-gray-300 hover:text-primary transition-all duration-300">Inicio</a></li>
+                        <li><a href="categorias.html" class="text-gray-300 hover:text-primary transition-all duration-300">Categorías</a></li>
+                        <li><a href="comunidad.html" class="text-gray-300 hover:text-primary transition-all duration-300">Comunidad</a></li>
+                        <li><a href="contacto.html" class="text-gray-300 hover:text-primary transition-all duration-300">Contacto</a></li>
+                        <li><a href="subir-receta.html" class="text-gray-300 hover:text-primary transition-all duration-300">Subir Receta</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 3 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Categorías Populares</h3>
+                    <ul class="space-y-2">
+                        <li><a href="categorias.html#postres" class="text-gray-300 hover:text-primary transition-all duration-300">Postres</a></li>
+                        <li><a href="categorias.html#vegetariano" class="text-gray-300 hover:text-primary transition-all duration-300">Vegetariano</a></li>
+                        <li><a href="categorias.html#carnes" class="text-gray-300 hover:text-primary transition-all duration-300">Carnes</a></li>
+                        <li><a href="categorias.html#mariscos" class="text-gray-300 hover:text-primary transition-all duration-300">Mariscos</a></li>
+                        <li><a href="categorias.html#sopas" class="text-gray-300 hover:text-primary transition-all duration-300">Sopas</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 4 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300"> Calle Lope de Vega, 4, Gijón, España</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">info@saboresdelmundo.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">+34 912 345 678</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Política de Privacidad</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Términos de Uso</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

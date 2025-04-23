@@ -1,0 +1,844 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Comentarios | Sabores del Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#FF6B35',
+                        'secondary': '#2EC4B6',
+                        'accent': '#FFBF69',
+                        'dark': '#1A535C',
+                        'light': '#F7FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .btn-secondary {
+                @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .card {
+                @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300;
+            }
+            
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold text-dark mb-6;
+            }
+            
+            .container-custom {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+
+            .star-rating {
+                @apply flex items-center;
+            }
+
+            .star {
+                @apply text-gray-300 text-xl cursor-pointer;
+            }
+
+            .star.filled {
+                @apply text-accent;
+            }
+
+            .nav-link {
+                @apply text-dark hover:text-primary transition-all duration-300;
+            }
+
+            .mobile-menu {
+                @apply fixed inset-0 bg-dark bg-opacity-90 z-50 transform transition-transform duration-300;
+            }
+
+            .comment-item {
+                @apply border-b border-gray-200 py-6 last:border-b-0;
+            }
+
+            .comment-header {
+                @apply flex justify-between items-start mb-3;
+            }
+
+            .comment-user {
+                @apply flex items-center;
+            }
+
+            .comment-avatar {
+                @apply w-10 h-10 rounded-full mr-3;
+            }
+
+            .comment-meta {
+                @apply flex flex-col;
+            }
+
+            .comment-name {
+                @apply font-semibold text-dark;
+            }
+
+            .comment-date {
+                @apply text-sm text-gray-500;
+            }
+
+            .comment-rating {
+                @apply flex items-center;
+            }
+
+            .comment-content {
+                @apply text-gray-700 mb-3;
+            }
+
+            .comment-actions {
+                @apply flex items-center space-x-4 text-sm;
+            }
+
+            .comment-action {
+                @apply flex items-center text-gray-500 hover:text-primary transition-all duration-300;
+            }
+
+            .comment-replies {
+                @apply pl-12 mt-4 space-y-4;
+            }
+
+            .pagination-item {
+                @apply px-3 py-1 rounded-md mx-1 bg-gray-200 hover:bg-primary hover:text-white transition-all duration-300;
+            }
+
+            .pagination-item.active {
+                @apply bg-primary text-white;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- Navegación -->
+    <header class="bg-white shadow-md">
+        <div class="container-custom">
+            <nav class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-primary">Sabores</span>
+                        <span class="text-2xl font-bold text-dark">del Mundo</span>
+                    </a>
+                </div>
+
+                <!-- Navegación Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="nav-link font-medium">Inicio</a>
+                    <a href="categorias.html" class="nav-link font-medium">Categorías</a>
+                    <a href="comunidad.html" class="nav-link font-medium">Comunidad</a>
+                    <a href="contacto.html" class="nav-link font-medium">Contacto</a>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="subir-receta.html" class="btn-secondary">
+                        <i class="fas fa-plus mr-2"></i>Subir Receta
+                    </a>
+                    <div class="relative">
+                        <button id="profileDropdown" class="flex items-center focus:outline-none">
+                            <img src="https://randomuser.me/api/portraits/women/12.jpg" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-primary">
+                        </button>
+                        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden">
+                            <a href="perfil.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                            <a href="subir-receta.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mis Recetas</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Favoritos</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Configuración</a>
+                            <div class="border-t border-gray-200 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menú Hamburguesa (Móvil) -->
+                <div class="md:hidden">
+                    <button id="menuBtn" class="text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menú Móvil -->
+    <div id="mobileMenu" class="mobile-menu translate-x-full md:hidden">
+        <div class="flex flex-col h-full p-8">
+            <div class="flex justify-end">
+                <button id="closeMenuBtn" class="text-white focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-8 mt-16">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="../img/homer.jpg" alt="Perfil" class="w-20 h-20 rounded-full border-2 border-primary mb-2">
+                    <h3 class="text-white font-medium">Pedro Picadpiedra</h3>
+                </div>
+                <a href="../index.html" class="text-white text-xl hover:text-primary transition-all duration-300">Inicio</a>
+                <a href="categorias.html" class="text-white text-xl hover:text-primary transition-all duration-300">Categorías</a>
+                <a href="comunidad.html" class="text-white text-xl hover:text-primary transition-all duration-300">Comunidad</a>
+                <a href="contacto.html" class="text-white text-xl hover:text-primary transition-all duration-300">Contacto</a>
+                <a href="perfil.html" class="text-white text-xl hover:text-primary transition-all duration-300">Mi Perfil</a>
+                <a href="subir-receta.html" class="btn-secondary w-full text-center">
+                    <i class="fas fa-plus mr-2"></i>Subir Receta
+                </a>
+                <a href="#" class="text-white text-xl hover:text-primary transition-all duration-300">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-100 py-3">
+        <div class="container-custom">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="../index.html" class="hover:text-primary">Inicio</a>
+                <span class="mx-2">/</span>
+                <a href="receta.html" class="hover:text-primary">Paella Valenciana</a>
+                <span class="mx-2">/</span>
+                <span class="text-primary font-medium">Comentarios</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="py-12">
+        <div class="container-custom">
+            <div class="flex flex-col lg:flex-row gap-8">
+                <!-- Columna Principal - Comentarios -->
+                <div class="lg:w-2/3">
+                    <h1 class="section-title">Comentarios y Valoraciones</h1>
+                    
+                    <!-- Resumen de Valoraciones -->
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                        <div class="flex flex-col md:flex-row items-center justify-between">
+                            <div class="flex flex-col items-center md:items-start mb-6 md:mb-0">
+                                <h2 class="text-4xl font-bold text-dark mb-2">4.8</h2>
+                                <div class="star-rating mb-2">
+                                    <span class="star filled"><i class="fas fa-star"></i></span>
+                                    <span class="star filled"><i class="fas fa-star"></i></span>
+                                    <span class="star filled"><i class="fas fa-star"></i></span>
+                                    <span class="star filled"><i class="fas fa-star"></i></span>
+                                    <span class="star filled"><i class="fas fa-star-half-alt"></i></span>
+                                </div>
+                                <p class="text-gray-600">Basado en 156 valoraciones</p>
+                            </div>
+                            
+                            <div class="w-full md:w-1/2">
+                                <div class="flex items-center mb-2">
+                                    <span class="text-sm text-gray-600 w-8">5</span>
+                                    <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
+                                        <div class="h-3 bg-primary rounded-full" style="width: 75%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">75%</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <span class="text-sm text-gray-600 w-8">4</span>
+                                    <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
+                                        <div class="h-3 bg-primary rounded-full" style="width: 18%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">18%</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <span class="text-sm text-gray-600 w-8">3</span>
+                                    <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
+                                        <div class="h-3 bg-primary rounded-full" style="width: 5%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">5%</span>
+                                </div>
+                                <div class="flex items-center mb-2">
+                                    <span class="text-sm text-gray-600 w-8">2</span>
+                                    <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
+                                        <div class="h-3 bg-primary rounded-full" style="width: 1%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">1%</span>
+                                </div>
+                                <div class="flex items-center">
+                                    <span class="text-sm text-gray-600 w-8">1</span>
+                                    <div class="flex-1 h-3 bg-gray-200 rounded-full mx-2">
+                                        <div class="h-3 bg-primary rounded-full" style="width: 1%"></div>
+                                    </div>
+                                    <span class="text-sm text-gray-600 w-8">1%</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Filtros de Comentarios -->
+                    <div class="flex flex-wrap justify-between items-center mb-6">
+                        <div class="flex items-center space-x-4 mb-4 sm:mb-0">
+                            <span class="text-gray-600">Ordenar por:</span>
+                            <select class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="recientes">Más recientes</option>
+                                <option value="antiguos">Más antiguos</option>
+                                <option value="valoracion-alta">Mayor valoración</option>
+                                <option value="valoracion-baja">Menor valoración</option>
+                            </select>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <span class="text-gray-600">Filtrar por:</span>
+                            <select class="border border-gray-300 rounded-lg px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent">
+                                <option value="todos">Todas las estrellas</option>
+                                <option value="5">5 estrellas</option>
+                                <option value="4">4 estrellas</option>
+                                <option value="3">3 estrellas</option>
+                                <option value="2">2 estrellas</option>
+                                <option value="1">1 estrella</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <!-- Formulario de Comentario -->
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                        <h3 class="text-xl font-bold text-dark mb-4">Deja tu comentario</h3>
+                        <form id="commentForm">
+                            <div class="mb-4">
+                                <label class="block text-gray-700 font-medium mb-2">Tu valoración</label>
+                                <div class="star-rating" id="ratingStars">
+                                    <span class="star" data-rating="1"><i class="fas fa-star"></i></span>
+                                    <span class="star" data-rating="2"><i class="fas fa-star"></i></span>
+                                    <span class="star" data-rating="3"><i class="fas fa-star"></i></span>
+                                    <span class="star" data-rating="4"><i class="fas fa-star"></i></span>
+                                    <span class="star" data-rating="5"><i class="fas fa-star"></i></span>
+                                </div>
+                            </div>
+                            <div class="mb-4">
+                                <label for="commentTitle" class="block text-gray-700 font-medium mb-2">Título</label>
+                                <input type="text" id="commentTitle" class="input-field" placeholder="Título de tu comentario">
+                            </div>
+                            <div class="mb-4">
+                                <label for="commentText" class="block text-gray-700 font-medium mb-2">Comentario</label>
+                                <textarea id="commentText" rows="4" class="input-field" placeholder="Comparte tu experiencia con esta receta..."></textarea>
+                            </div>
+                            <div class="mb-4">
+                                <label for="commentImage" class="block text-gray-700 font-medium mb-2">Añadir imagen (opcional)</label>
+                                <div class="flex items-center">
+                                    <label class="btn-secondary cursor-pointer">
+                                        <i class="fas fa-camera mr-2"></i>Subir imagen
+                                        <input type="file" id="commentImage" class="hidden" accept="image/*">
+                                    </label>
+                                    <span id="fileName" class="ml-3 text-gray-600"></span>
+                                </div>
+                            </div>
+                            <button type="submit" class="btn-primary">
+                                Publicar comentario
+                            </button>
+                        </form>
+                    </div>
+                    
+                    <!-- Lista de Comentarios -->
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-xl font-bold text-dark mb-6">156 comentarios</h3>
+                        
+                        <div class="space-y-0">
+                            <!-- Comentario 1 -->
+                            <div class="comment-item">
+                                <div class="comment-header">
+                                    <div class="comment-user">
+                                        <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuario" class="comment-avatar">
+                                        <div class="comment-meta">
+                                            <span class="comment-name">Carlos Rodríguez</span>
+                                            <span class="comment-date">15 marzo 2025</span>
+                                        </div>
+                                    </div>
+                                    <div class="comment-rating">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-dark mb-2">¡La mejor paella que he probado!</h4>
+                                <p class="comment-content">Seguí la receta al pie de la letra y quedó espectacular. El arroz en su punto, los sabores perfectamente equilibrados y la presentación impresionante. Mis invitados quedaron encantados y me pidieron la receta. Definitivamente la volveré a hacer.</p>
+                                <div class="grid grid-cols-3 gap-2 mb-3">
+                                    <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Foto de usuario" class="rounded-lg w-full h-24 object-cover">
+                                    <img src="https://images.unsplash.com/photo-1515669097368-22e68427d265?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Foto de usuario" class="rounded-lg w-full h-24 object-cover">
+                                    <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Foto de usuario" class="rounded-lg w-full h-24 object-cover">
+                                </div>
+                                <div class="comment-actions">
+                                    <button class="comment-action">
+                                        <i class="far fa-thumbs-up mr-1"></i> 24
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-comment mr-1"></i> Responder
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-flag mr-1"></i> Reportar
+                                    </button>
+                                </div>
+                                
+                                <!-- Respuestas al comentario 1 -->
+                                <div class="comment-replies">
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <div class="comment-header">
+                                            <div class="comment-user">
+                                                <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Usuario" class="comment-avatar">
+                                                <div class="comment-meta">
+                                                    <span class="comment-name">Laura Martínez</span>
+                                                    <span class="comment-date">16 marzo 2025</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="comment-content">¡Me alegro de que te haya gustado, Carlos! Un consejo: prueba a añadir un poco de pimentón ahumado para darle un toque especial.</p>
+                                        <div class="comment-actions">
+                                            <button class="comment-action">
+                                                <i class="far fa-thumbs-up mr-1"></i> 8
+                                            </button>
+                                            <button class="comment-action">
+                                                <i class="far fa-comment mr-1"></i> Responder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Comentario 2 -->
+                            <div class="comment-item">
+                                <div class="comment-header">
+                                    <div class="comment-user">
+                                        <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Usuario" class="comment-avatar">
+                                        <div class="comment-meta">
+                                            <span class="comment-name">Ana Gómez</span>
+                                            <span class="comment-date">10 marzo 2025</span>
+                                        </div>
+                                    </div>
+                                    <div class="comment-rating">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-dark mb-2">Muy buena receta, pero con una sugerencia</h4>
+                                <p class="comment-content">La receta está muy bien explicada y el resultado fue delicioso. Sin embargo, creo que la cantidad de azafrán es un poco excesiva para mi gusto. La próxima vez probaré con un poco menos. Por lo demás, ¡perfecta!</p>
+                                <div class="comment-actions">
+                                    <button class="comment-action">
+                                        <i class="far fa-thumbs-up mr-1"></i> 15
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-comment mr-1"></i> Responder
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-flag mr-1"></i> Reportar
+                                    </button>
+                                </div>
+                                
+                                <!-- Respuestas al comentario 2 -->
+                                <div class="comment-replies">
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <div class="comment-header">
+                                            <div class="comment-user">
+                                                <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Usuario" class="comment-avatar">
+                                                <div class="comment-meta">
+                                                    <span class="comment-name">Miguel Ángel Pérez</span>
+                                                    <span class="comment-date">11 marzo 2025</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="comment-content">Tienes razón, Ana. El azafrán puede ser bastante intenso. Yo suelo usar la mitad de lo que indica la receta y queda perfecta.</p>
+                                        <div class="comment-actions">
+                                            <button class="comment-action">
+                                                <i class="far fa-thumbs-up mr-1"></i> 6
+                                            </button>
+                                            <button class="comment-action">
+                                                <i class="far fa-comment mr-1"></i> Responder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Comentario 3 -->
+                            <div class="comment-item">
+                                <div class="comment-header">
+                                    <div class="comment-user">
+                                        <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Usuario" class="comment-avatar">
+                                        <div class="comment-meta">
+                                            <span class="comment-name">Javier Fernández</span>
+                                            <span class="comment-date">5 marzo 2025</span>
+                                        </div>
+                                    </div>
+                                    <div class="comment-rating">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-dark mb-2">Receta auténtica valenciana</h4>
+                                <p class="comment-content">Como valenciano, puedo decir que esta receta es muy fiel a la paella tradicional. Me encanta que se respeten los ingredientes originales y no se añadan cosas que no van, como guisantes o chorizo. El socarrat quedó perfecto siguiendo los tiempos indicados. ¡Enhorabuena!</p>
+                                <div class="grid grid-cols-2 gap-2 mb-3">
+                                    <img src="https://images.unsplash.com/photo-1604152135912-04a022e23696?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Foto de usuario" class="rounded-lg w-full h-32 object-cover">
+                                    <img src="https://images.unsplash.com/photo-1607877742574-a7253426f5af?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Foto de usuario" class="rounded-lg w-full h-32 object-cover">
+                                </div>
+                                <div class="comment-actions">
+                                    <button class="comment-action">
+                                        <i class="far fa-thumbs-up mr-1"></i> 32
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-comment mr-1"></i> Responder
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-flag mr-1"></i> Reportar
+                                    </button>
+                                </div>
+                            </div>
+                            
+                            <!-- Comentario 4 -->
+                            <div class="comment-item">
+                                <div class="comment-header">
+                                    <div class="comment-user">
+                                        <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Usuario" class="comment-avatar">
+                                        <div class="comment-meta">
+                                            <span class="comment-name">María López</span>
+                                            <span class="comment-date">28 febrero 2025</span>
+                                        </div>
+                                    </div>
+                                    <div class="comment-rating">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-dark mb-2">Buena receta pero difícil de seguir</h4>
+                                <p class="comment-content">El resultado final fue bueno, pero creo que algunos pasos podrían explicarse mejor. Tuve problemas con el punto del arroz y me quedó un poco pasado. También sería útil tener más fotos del proceso. De todas formas, el sabor fue muy bueno y mis hijos la disfrutaron mucho.</p>
+                                <div class="comment-actions">
+                                    <button class="comment-action">
+                                        <i class="far fa-thumbs-up mr-1"></i> 8
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-comment mr-1"></i> Responder
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-flag mr-1"></i> Reportar
+                                    </button>
+                                </div>
+                                
+                                <!-- Respuestas al comentario 4 -->
+                                <div class="comment-replies">
+                                    <div class="bg-gray-50 rounded-lg p-4">
+                                        <div class="comment-header">
+                                            <div class="comment-user">
+                                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Usuario" class="comment-avatar">
+                                                <div class="comment-meta">
+                                                    <span class="comment-name">Carlos Rodríguez</span>
+                                                    <span class="comment-date">1 marzo 2025</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <p class="comment-content">María, un truco para el punto del arroz es mantener el fuego alto los primeros 10 minutos y luego bajarlo a medio-bajo los últimos 8-10 minutos. ¡Espero que te sirva para la próxima vez!</p>
+                                        <div class="comment-actions">
+                                            <button class="comment-action">
+                                                <i class="far fa-thumbs-up mr-1"></i> 12
+                                            </button>
+                                            <button class="comment-action">
+                                                <i class="far fa-comment mr-1"></i> Responder
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Comentario 5 -->
+                            <div class="comment-item">
+                                <div class="comment-header">
+                                    <div class="comment-user">
+                                        <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Usuario" class="comment-avatar">
+                                        <div class="comment-meta">
+                                            <span class="comment-name">Laura Martínez</span>
+                                            <span class="comment-date">20 febrero 2025</span>
+                                        </div>
+                                    </div>
+                                    <div class="comment-rating">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                        </div>
+                                    </div>
+                                </div>
+                                <h4 class="font-semibold text-dark mb-2">¡Impresionante adaptación para vegetarianos!</h4>
+                                <p class="comment-content">Seguí la variante vegetariana que se sugiere al final de la receta y quedó espectacular. Utilicé alcachofas, pimientos, judías verdes y setas, y el resultado fue una paella llena de sabor. Incluso mis amigos no vegetarianos quedaron encantados. Muy recomendable para quienes buscan opciones sin carne.</p>
+                                <div class="grid grid-cols-1 gap-2 mb-3">
+                                    <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Foto de usuario" class="rounded-lg w-full h-48 object-cover">
+                                </div>
+                                <div class="comment-actions">
+                                    <button class="comment-action">
+                                        <i class="far fa-thumbs-up mr-1"></i> 19
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-comment mr-1"></i> Responder
+                                    </button>
+                                    <button class="comment-action">
+                                        <i class="far fa-flag mr-1"></i> Reportar
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Paginación -->
+                        <div class="flex justify-center mt-8">
+                            <a href="#" class="pagination-item active">1</a>
+                            <a href="#" class="pagination-item">2</a>
+                            <a href="#" class="pagination-item">3</a>
+                            <a href="#" class="pagination-item">4</a>
+                            <span class="px-3 py-1 mx-1">...</span>
+                            <a href="#" class="pagination-item">16</a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Columna Lateral -->
+                <div class="lg:w-1/3">
+                    <!-- Receta Destacada -->
+                    <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Valenciana" class="w-full h-48 object-cover">
+                        <div class="p-6">
+                            <h3 class="text-xl font-bold text-dark mb-2">Paella Valenciana</h3>
+                            <div class="flex items-center mb-4">
+                                <div class="star-rating">
+                                    <span class="star filled"><i class="fas fa-star"></i></span>
+                                    <span class="star filled"><i class="fas fa-star"></i></span>
+                                    <span class="star filled"><i class="fas fa-star"></i></span>
+                                    <span class="star filled"><i class="fas fa-star"></i></span>
+                                    <span class="star filled"><i class="fas fa-star-half-alt"></i></span>
+                                </div>
+                                <span class="text-gray-600 ml-2">(4.8)</span>
+                            </div>
+                            <div class="flex items-center mb-4">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Chef" class="w-10 h-10 rounded-full mr-3">
+                                <div>
+                                    <p class="font-medium text-dark">Carlos Rodríguez</p>
+                                    <p class="text-sm text-gray-500">Chef Especialista</p>
+                                </div>
+                            </div>
+                            <div class="flex justify-between text-sm text-gray-600 mb-4">
+                                <span><i class="far fa-clock mr-1"></i> 45 min</span>
+                                <span><i class="fas fa-utensils mr-1"></i> 4 personas</span>
+                                <span><i class="fas fa-fire mr-1"></i> Media</span>
+                            </div>
+                            <a href="receta.html" class="btn-primary w-full text-center">
+                                Ver receta completa
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Recetas Relacionadas -->
+                    <div class="bg-white rounded-xl shadow-md p-6 mb-8">
+                        <h3 class="text-xl font-bold text-dark mb-4">Recetas Relacionadas</h3>
+                        
+                        <div class="space-y-4">
+                            <!-- Receta Relacionada 1 -->
+                            <div class="flex items-center">
+                                <img src="https://images.unsplash.com/photo-1515669097368-22e68427d265?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Arroz Negro" class="w-20 h-20 rounded-lg object-cover mr-3">
+                                <div>
+                                    <h4 class="font-semibold text-dark">Arroz Negro</h4>
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 text-xs ml-1">(4.2)</span>
+                                    </div>
+                                    <a href="#" class="text-primary text-sm hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                            
+                            <!-- Receta Relacionada 2 -->
+                            <div class="flex items-center">
+                                <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Fideuà" class="w-20 h-20 rounded-lg object-cover mr-3">
+                                <div>
+                                    <h4 class="font-semibold text-dark">Fideuà</h4>
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 text-xs ml-1">(4.9)</span>
+                                    </div>
+                                    <a href="#" class="text-primary text-sm hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                            
+                            <!-- Receta Relacionada 3 -->
+                            <div class="flex items-center">
+                                <img src="https://images.unsplash.com/photo-1604152135912-04a022e23696?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Arroz a Banda" class="w-20 h-20 rounded-lg object-cover mr-3">
+                                <div>
+                                    <h4 class="font-semibold text-dark">Arroz a Banda</h4>
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 text-xs ml-1">(4.3)</span>
+                                    </div>
+                                    <a href="#" class="text-primary text-sm hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                            
+                            <!-- Receta Relacionada 4 -->
+                            <div class="flex items-center">
+                                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Paella Vegetariana" class="w-20 h-20 rounded-lg object-cover mr-3">
+                                <div>
+                                    <h4 class="font-semibold text-dark">Paella Vegetariana</h4>
+                                    <div class="flex items-center">
+                                        <div class="star-rating">
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star filled"><i class="fas fa-star"></i></span>
+                                            <span class="star"><i class="fas fa-star"></i></span>
+                                        </div>
+                                        <span class="text-gray-600 text-xs ml-1">(4.4)</span>
+                                    </div>
+                                    <a href="#" class="text-primary text-sm hover:underline">Ver receta</a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Etiquetas Populares -->
+                    <div class="bg-white rounded-xl shadow-md p-6">
+                        <h3 class="text-xl font-bold text-dark mb-4">Etiquetas Populares</h3>
+                        <div class="flex flex-wrap gap-2">
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Paella</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Arroz</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Española</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Valenciana</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Mediterránea</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Mariscos</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Azafrán</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Tradicional</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Pollo</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Conejo</a>
+                            <a href="#" class="bg-gray-200 text-gray-700 px-3 py-1 rounded-full text-sm hover:bg-primary hover:text-white transition-all duration-300">Vegetariana</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8 mt-12">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Columna 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Sabores del Mundo</h3>
+                    <p class="text-gray-300 mb-4">Plataforma global para compartir y descubrir recetas auténticas de todas las culturas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna 2 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="../index.html" class="text-gray-300 hover:text-primary transition-all duration-300">Inicio</a></li>
+                        <li><a href="categorias.html" class="text-gray-300 hover:text-primary transition-all duration-300">Categorías</a></li>
+                        <li><a href="comunidad.html" class="text-gray-300 hover:text-primary transition-all duration-300">Comunidad</a></li>
+                        <li><a href="contacto.html" class="text-gray-300 hover:text-primary transition-all duration-300">Contacto</a></li>
+                        <li><a href="subir-receta.html" class="text-gray-300 hover:text-primary transition-all duration-300">Subir Receta</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 3 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Categorías Populares</h3>
+                    <ul class="space-y-2">
+                        <li><a href="categorias.html#postres" class="text-gray-300 hover:text-primary transition-all duration-300">Postres</a></li>
+                        <li><a href="categorias.html#vegetariano" class="text-gray-300 hover:text-primary transition-all duration-300">Vegetariano</a></li>
+                        <li><a href="categorias.html#carnes" class="text-gray-300 hover:text-primary transition-all duration-300">Carnes</a></li>
+                        <li><a href="categorias.html#mariscos" class="text-gray-300 hover:text-primary transition-all duration-300">Mariscos</a></li>
+                        <li><a href="categorias.html#sopas" class="text-gray-300 hover:text-primary transition-all duration-300">Sopas</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 4 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">Calle Lope de Vega, 4 , España</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">info@saboresdelmundo.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">+34 912 345 678</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Política de Privacidad</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Términos de Uso</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

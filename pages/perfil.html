@@ -1,0 +1,1135 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Perfil de Usuario | Sabores del Mundo</title>
+
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#FF6B35',
+                        'secondary': '#2EC4B6',
+                        'accent': '#FFBF69',
+                        'dark': '#1A535C',
+                        'light': '#F7FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .btn-secondary {
+                @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .card {
+                @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300;
+            }
+            
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold text-dark mb-6;
+            }
+            
+            .container-custom {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+
+            .star-rating {
+                @apply flex items-center;
+            }
+
+            .star {
+                @apply text-gray-300 text-xl;
+            }
+
+            .star.filled {
+                @apply text-accent;
+            }
+
+            .nav-link {
+                @apply text-dark hover:text-primary transition-all duration-300;
+            }
+
+            .mobile-menu {
+                @apply fixed inset-0 bg-dark bg-opacity-90 z-50 transform transition-transform duration-300;
+            }
+
+            .pagination-item {
+                @apply px-3 py-1 rounded-md mx-1 bg-gray-200 hover:bg-primary hover:text-white transition-all duration-300;
+            }
+
+            .pagination-item.active {
+                @apply bg-primary text-white;
+            }
+
+            .profile-tab {
+                @apply px-4 py-2 font-medium border-b-2 border-transparent hover:text-primary transition-all duration-300;
+            }
+
+            .profile-tab.active {
+                @apply text-primary border-primary;
+            }
+
+            .badge {
+                @apply inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium;
+            }
+
+            .badge-primary {
+                @apply bg-primary bg-opacity-10 text-primary;
+            }
+
+            .badge-secondary {
+                @apply bg-secondary bg-opacity-10 text-secondary;
+            }
+
+            .badge-accent {
+                @apply bg-accent bg-opacity-20 text-dark;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- Navegación -->
+    <header class="bg-white shadow-md">
+        <div class="container-custom">
+            <nav class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-primary">Sabores</span>
+                        <span class="text-2xl font-bold text-dark">del Mundo</span>
+                    </a>
+                </div>
+
+                <!-- Navegación escritorio -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="nav-link font-medium">Inicio</a>
+                    <a href="categorias.html" class="nav-link font-medium">Categorías</a>
+                    <a href="comunidad.html" class="nav-link font-medium">Comunidad</a>
+                    <a href="contacto.html" class="nav-link font-medium">Contacto</a>
+                </div>
+
+                <!-- Botones-->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="subir-receta.html" class="btn-secondary">
+                        <i class="fas fa-plus mr-2"></i>Subir Receta
+                    </a>
+                    <div class="relative">
+                        <button id="profileDropdown" class="flex items-center focus:outline-none">
+                            <img src="../img/homer.jpg" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-primary">
+                        </button>
+                        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden">
+                            <a href="perfil.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                            <a href="subir-receta.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mis Recetas</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Favoritos</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Configuración</a>
+                            <div class="border-t border-gray-200 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menú Hamburguesa -->
+                <div class="md:hidden">
+                    <button id="menuBtn" class="text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menú Móvil -->
+    <div id="mobileMenu" class="mobile-menu translate-x-full md:hidden">
+        <div class="flex flex-col h-full p-8">
+            <div class="flex justify-end">
+                <button id="closeMenuBtn" class="text-white focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-8 mt-16">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="../img/homer.jpg" alt="Perfil" class="w-20 h-20 rounded-full border-2 border-primary mb-2">
+                    <h3 class="text-white font-medium"></h3>
+                </div>
+                <a href="../index.html" class="text-white text-xl hover:text-primary transition-all duration-300">Inicio</a>
+                <a href="categorias.html" class="text-white text-xl hover:text-primary transition-all duration-300">Categorías</a>
+                <a href="comunidad.html" class="text-white text-xl hover:text-primary transition-all duration-300">Comunidad</a>
+                <a href="contacto.html" class="text-white text-xl hover:text-primary transition-all duration-300">Contacto</a>
+                <a href="perfil.html" class="text-white text-xl hover:text-primary transition-all duration-300">Mi Perfil</a>
+                <a href="subir-receta.html" class="btn-secondary w-full text-center">
+                    <i class="fas fa-plus mr-2"></i>Subir Receta
+                </a>
+                <a href="#" class="text-white text-xl hover:text-primary transition-all duration-300">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+
+
+    <div class="bg-gray-100 py-3">
+        <div class="container-custom">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="../index.html" class="hover:text-primary">Inicio</a>
+                <span class="mx-2">/</span>
+                <span class="text-primary font-medium">Perfil</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="py-12">
+        <div class="container-custom">
+            <!-- Cabecera de Perfil -->
+            <div class="bg-white rounded-xl shadow-md overflow-hidden mb-8">
+                <div class="bg-gradient-to-r from-primary to-secondary h-48 relative">
+                    <button class="absolute top-4 right-4 bg-white bg-opacity-20 text-white p-2 rounded-full hover:bg-opacity-30 transition-all duration-300">
+                        <i class="fas fa-camera"></i>
+                    </button>
+                </div>
+                <div class="p-6 relative">
+                    <div class="absolute -top-16 left-6">
+                        <div class="relative">
+                            <img src="../img/homer.jpg" alt="Perfil" class="w-32 h-32 rounded-full border-4 border-white">
+                            <button class="absolute bottom-0 right-0 bg-primary text-white p-2 rounded-full hover:bg-opacity-90 transition-all duration-300">
+                                <i class="fas fa-camera"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="mt-16 md:mt-0 md:ml-36">
+                        <div class="flex flex-col md:flex-row md:justify-between md:items-center mb-4">
+                            <div>
+                                <h1 class="text-3xl font-bold text-dark">Pedro Picapiedra</h1>
+                                <p class="text-gray-600">Chef especializado en cocina mediterránea</p>
+                            </div>
+                            <div class="mt-4 md:mt-0 flex flex-wrap gap-2">
+                                <button class="btn-primary">
+                                    <i class="fas fa-user-edit mr-2"></i>Editar Perfil
+                                </button>
+                                <button class="bg-gray-200 text-gray-700 font-semibold py-2 px-4 rounded-lg hover:bg-gray-300 transition-all duration-300">
+                                    <i class="fas fa-cog mr-2"></i>Configuración
+                                </button>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-6 text-gray-600 mb-6">
+                            <div class="flex items-center">
+                                <i class="fas fa-map-marker-alt text-primary mr-2"></i>
+                                <span>Gijón, España</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-calendar-alt text-primary mr-2"></i>
+                                <span>Miembro desde Marzo 2023</span>
+                            </div>
+                            <div class="flex items-center">
+                                <i class="fas fa-envelope text-primary mr-2"></i>
+                                <span>pedrito.lapiedra@email.com</span>
+                            </div>
+                        </div>
+                        <div class="flex flex-wrap gap-4 mb-6">
+                            <div class="flex items-center bg-gray-100 px-4 py-2 rounded-lg">
+                                <span class="font-bold text-dark mr-2">124</span>
+                                <span class="text-gray-600">Recetas</span>
+                            </div>
+                            <div class="flex items-center bg-gray-100 px-4 py-2 rounded-lg">
+                                <span class="font-bold text-dark mr-2">3.2k</span>
+                                <span class="text-gray-600">Seguidores</span>
+                            </div>
+                            <div class="flex items-center bg-gray-100 px-4 py-2 rounded-lg">
+                                <span class="font-bold text-dark mr-2">156</span>
+                                <span class="text-gray-600">Siguiendo</span>
+                            </div>
+                            <div class="flex items-center bg-gray-100 px-4 py-2 rounded-lg">
+                                <span class="font-bold text-dark mr-2">4.8</span>
+                                <span class="text-gray-600">Valoración</span>
+                            </div>
+                        </div>
+                        <div>
+                            <h3 class="font-bold text-dark mb-2">Sobre mí</h3>
+                            <p class="text-gray-600">Apasionado de la gastronomía española y mediterránea. Comparto recetas tradicionales con un toque personal. Mi especialidad son los arroces y los platos de pescado. Me encanta experimentar con sabores y técnicas de todo el mundo.</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Pestañas de Perfil -->
+            <div class="mb-8">
+                <div class="border-b border-gray-200">
+                    <div class="flex overflow-x-auto">
+                        <button id="tabMisRecetas" class="profile-tab active whitespace-nowrap">Mis Recetas</button>
+                        <button id="tabFavoritos" class="profile-tab whitespace-nowrap">Favoritos</button>
+                        <button id="tabColecciones" class="profile-tab whitespace-nowrap">Colecciones</button>
+                        <button id="tabSeguidores" class="profile-tab whitespace-nowrap">Seguidores</button>
+                        <button id="tabSiguiendo" class="profile-tab whitespace-nowrap">Siguiendo</button>
+                        <button id="tabActividad" class="profile-tab whitespace-nowrap">Actividad Reciente</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Contenido de Pestañas -->
+            <div>
+                <!-- Mis Recetas -->
+                <div id="contentMisRecetas" class="tab-content">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-dark">Mis Recetas</h2>
+                        <a href="subir-receta.html" class="btn-secondary">
+                            <i class="fas fa-plus mr-2"></i>Nueva Receta
+                        </a>
+                    </div>
+                    
+                    <!-- Filtros Rápidos -->
+                    <div class="flex flex-wrap gap-2 mb-6">
+                        <button class="bg-primary text-white px-4 py-2 rounded-lg">Todas (124)</button>
+                        <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all duration-300">Publicadas (118)</button>
+                        <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all duration-300">Borradores (6)</button>
+                        <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all duration-300">Más valoradas</button>
+                        <button class="bg-gray-200 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-300 transition-all duration-300">Más vistas</button>
+                    </div>
+                    
+                    <!-- Grid de Recetas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Receta 1 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Valenciana" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                                <div class="absolute top-4 left-4 flex space-x-2">
+                                    <span class="badge badge-primary">Publicada</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella Valenciana</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-calendar-alt mr-1"></i> 15/03/2025</span>
+                                    <span><i class="far fa-eye mr-1"></i> 1.2k vistas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 2 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella de Marisco" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                                <div class="absolute top-4 left-4 flex space-x-2">
+                                    <span class="badge badge-primary">Publicada</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella de Marisco</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-calendar-alt mr-1"></i> 02/03/2025</span>
+                                    <span><i class="far fa-eye mr-1"></i> 987 vistas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 3 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Arroz Negro" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                                <div class="absolute top-4 left-4 flex space-x-2">
+                                    <span class="badge badge-primary">Publicada</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Arroz Negro</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-calendar-alt mr-1"></i> 18/02/2025</span>
+                                    <span><i class="far fa-eye mr-1"></i> 756 vistas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 4 (Borrador) -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fideuá" class="w-full h-48 object-cover opacity-70">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                                <div class="absolute top-4 left-4 flex space-x-2">
+                                    <span class="badge badge-secondary">Borrador</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Fideuá Valenciana</h3>
+                                    <div class="text-gray-400 text-sm">Sin valoraciones</div>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-calendar-alt mr-1"></i> 01/04/2025</span>
+                                    <span><i class="far fa-eye mr-1"></i> No publicada</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="subir-receta.html" class="text-primary font-medium hover:underline">Continuar editando</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 5 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1607118750694-1469a22ef45d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Mixta" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                                <div class="absolute top-4 left-4 flex space-x-2">
+                                    <span class="badge badge-primary">Publicada</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella Mixta</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-calendar-alt mr-1"></i> 05/02/2025</span>
+                                    <span><i class="far fa-eye mr-1"></i> 543 vistas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta 6 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Vegetariana" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    España
+                                </div>
+                                <div class="absolute top-4 left-4 flex space-x-2">
+                                    <span class="badge badge-primary">Publicada</span>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Paella Vegetariana</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex justify-between text-sm text-gray-600 mb-3">
+                                    <span><i class="far fa-calendar-alt mr-1"></i> 20/01/2025</span>
+                                    <span><i class="far fa-eye mr-1"></i> 678 vistas</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">21</a>
+                    </div>
+                </div>
+                
+                <!-- Favoritos -->
+                <div id="contentFavoritos" class="tab-content hidden">
+                    <h2 class="text-2xl font-bold text-dark mb-6">Recetas Favoritas</h2>
+                    
+                    <!-- Grid de Recetas Favoritas -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Receta Favorita 1 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Pizza Napolitana" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Italia
+                                </div>
+                                <button class="absolute top-4 left-4 text-red-500 bg-white rounded-full p-2 hover:bg-gray-100 transition-all duration-300">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Pizza Napolitana</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Marco Rossi</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <span class="text-sm text-gray-600"><i class="far fa-calendar-alt mr-1"></i> 10/03/2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta Favorita 2 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Sushi" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Japón
+                                </div>
+                                <button class="absolute top-4 left-4 text-red-500 bg-white rounded-full p-2 hover:bg-gray-100 transition-all duration-300">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Sushi Variado</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Yuki Tanaka</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <span class="text-sm text-gray-600"><i class="far fa-calendar-alt mr-1"></i> 05/03/2025</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Receta Favorita 3 -->
+                        <div class="card">
+                            <div class="relative">
+                                <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tiramisú" class="w-full h-48 object-cover">
+                                <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                    Italia
+                                </div>
+                                <button class="absolute top-4 left-4 text-red-500 bg-white rounded-full p-2 hover:bg-gray-100 transition-all duration-300">
+                                    <i class="fas fa-heart"></i>
+                                </button>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <h3 class="text-lg font-bold text-dark">Tiramisú Clásico</h3>
+                                    <div class="star-rating">
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                        <span class="star filled"><i class="fas fa-star"></i></span>
+                                    </div>
+                                </div>
+                                <div class="flex items-center mb-3">
+                                    <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                    <span class="text-sm text-gray-600">Giulia Bianchi</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="receta.html" class="text-primary font-medium hover:underline">Ver receta</a>
+                                    <span class="text-sm text-gray-600"><i class="far fa-calendar-alt mr-1"></i> 28/02/2025</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">12</a>
+                    </div>
+                </div>
+                
+                <!-- Colecciones -->
+                <div id="contentColecciones" class="tab-content hidden">
+                    <div class="flex justify-between items-center mb-6">
+                        <h2 class="text-2xl font-bold text-dark">Mis Colecciones</h2>
+                        <button class="btn-secondary">
+                            <i class="fas fa-plus mr-2"></i>Nueva Colección
+                        </button>
+                    </div>
+                    
+                    <!-- Grid de Colecciones -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                        <!-- Colección 1 -->
+                        <div class="card">
+                            <div class="relative">
+                                <div class="grid grid-cols-2 grid-rows-2 h-48">
+                                    <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1626200419199-391ae4be7a9c?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella de Marisco" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Arroz Negro" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fideuá" class="w-full h-full object-cover">
+                                </div>
+                                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                    <h3 class="text-white text-xl font-bold">Arroces Españoles</h3>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">12 recetas</span>
+                                    <span class="text-gray-600"><i class="far fa-eye mr-1"></i> Pública</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="#" class="text-primary font-medium hover:underline">Ver colección</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Colección 2 -->
+                        <div class="card">
+                            <div class="relative">
+                                <div class="grid grid-cols-2 grid-rows-2 h-48">
+                                    <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tiramisú" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Cheesecake" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tarta de Chocolate" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Macarons" class="w-full h-full object-cover">
+                                </div>
+                                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                    <h3 class="text-white text-xl font-bold">Postres Favoritos</h3>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">8 recetas</span>
+                                    <span class="text-gray-600"><i class="far fa-eye mr-1"></i> Pública</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="#" class="text-primary font-medium hover:underline">Ver colección</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Colección 3 -->
+                        <div class="card">
+                            <div class="relative">
+                                <div class="grid grid-cols-2 grid-rows-2 h-48">
+                                    <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Ensalada" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Verduras" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Vegetariana" class="w-full h-full object-cover">
+                                    <img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Curry Vegetariano" class="w-full h-full object-cover">
+                                </div>
+                                <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                    <h3 class="text-white text-xl font-bold">Recetas Vegetarianas</h3>
+                                </div>
+                            </div>
+                            <div class="p-4">
+                                <div class="flex justify-between items-center mb-2">
+                                    <span class="text-gray-600">15 recetas</span>
+                                    <span class="text-gray-600"><i class="fas fa-lock mr-1"></i> Privada</span>
+                                </div>
+                                <div class="flex justify-between items-center">
+                                    <a href="#" class="text-primary font-medium hover:underline">Ver colección</a>
+                                    <div class="flex space-x-2">
+                                        <button class="text-gray-500 hover:text-primary transition-all duration-300">
+                                            <i class="fas fa-edit"></i>
+                                        </button>
+                                        <button class="text-gray-500 hover:text-red-500 transition-all duration-300">
+                                            <i class="fas fa-trash-alt"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Seguidores -->
+                <div id="contentSeguidores" class="tab-content hidden">
+                    <h2 class="text-2xl font-bold text-dark mb-6">Seguidores (3,245)</h2>
+                    
+                    <!-- Buscador de Seguidores -->
+                    <div class="mb-6">
+                        <div class="relative">
+                            <input type="text" class="input-field pl-12" placeholder="Buscar seguidores...">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de Seguidores -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Seguidor 1 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Seguidor" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Carlos Rodríguez</h3>
+                                <p class="text-sm text-gray-600">42 recetas • 156 seguidores</p>
+                            </div>
+                            <button class="btn-primary text-sm py-1 px-3">Seguir</button>
+                        </div>
+                        
+                        <!-- Seguidor 2 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Seguidor" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Laura Martínez</h3>
+                                <p class="text-sm text-gray-600">28 recetas • 89 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                        
+                        <!-- Seguidor 3 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Seguidor" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Miguel Ángel Pérez</h3>
+                                <p class="text-sm text-gray-600">65 recetas • 312 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                        
+                        <!-- Seguidor 4 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Seguidor" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Ana López</h3>
+                                <p class="text-sm text-gray-600">37 recetas • 203 seguidores</p>
+                            </div>
+                            <button class="btn-primary text-sm py-1 px-3">Seguir</button>
+                        </div>
+                        
+                        <!-- Seguidor 5 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Seguidor" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Javier Fernández</h3>
+                                <p class="text-sm text-gray-600">19 recetas • 78 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                        
+                        <!-- Seguidor 6 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Seguidor" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Lucía Gómez</h3>
+                                <p class="text-sm text-gray-600">52 recetas • 267 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">542</a>
+                    </div>
+                </div>
+                
+                <!-- Siguiendo -->
+                <div id="contentSiguiendo" class="tab-content hidden">
+                    <h2 class="text-2xl font-bold text-dark mb-6">Siguiendo (156)</h2>
+                    
+                    <!-- Buscador de Siguiendo -->
+                    <div class="mb-6">
+                        <div class="relative">
+                            <input type="text" class="input-field pl-12" placeholder="Buscar personas que sigues...">
+                            <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                                <i class="fas fa-search text-gray-400"></i>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Lista de Siguiendo -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+                        <!-- Siguiendo 1 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/women/32.jpg" alt="Siguiendo" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Laura Martínez</h3>
+                                <p class="text-sm text-gray-600">28 recetas • 89 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                        
+                        <!-- Siguiendo 2 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/men/22.jpg" alt="Siguiendo" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Miguel Ángel Pérez</h3>
+                                <p class="text-sm text-gray-600">65 recetas • 312 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                        
+                        <!-- Siguiendo 3 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/men/45.jpg" alt="Siguiendo" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Javier Fernández</h3>
+                                <p class="text-sm text-gray-600">19 recetas • 78 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                        
+                        <!-- Siguiendo 4 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/women/68.jpg" alt="Siguiendo" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Lucía Gómez</h3>
+                                <p class="text-sm text-gray-600">52 recetas • 267 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                        
+                        <!-- Siguiendo 5 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Siguiendo" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Marco Rossi</h3>
+                                <p class="text-sm text-gray-600">43 recetas • 178 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                        
+                        <!-- Siguiendo 6 -->
+                        <div class="bg-white p-4 rounded-lg shadow-sm flex items-center">
+                            <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Siguiendo" class="w-16 h-16 rounded-full mr-4">
+                            <div class="flex-grow">
+                                <h3 class="font-bold text-dark">Yuki Tanaka</h3>
+                                <p class="text-sm text-gray-600">31 recetas • 145 seguidores</p>
+                            </div>
+                            <button class="bg-gray-200 text-gray-700 font-semibold text-sm py-1 px-3 rounded-lg hover:bg-gray-300 transition-all duration-300">Siguiendo</button>
+                        </div>
+                    </div>
+                    
+                    <!-- Paginación -->
+                    <div class="flex justify-center mt-10">
+                        <a href="#" class="pagination-item active">1</a>
+                        <a href="#" class="pagination-item">2</a>
+                        <a href="#" class="pagination-item">3</a>
+                        <a href="#" class="pagination-item">4</a>
+                        <span class="px-3 py-1 mx-1">...</span>
+                        <a href="#" class="pagination-item">26</a>
+                    </div>
+                </div>
+                
+                <!-- Actividad Reciente -->
+                <div id="contentActividad" class="tab-content hidden">
+                    <h2 class="text-2xl font-bold text-dark mb-6">Actividad Reciente</h2>
+                    
+                    <!-- Timeline de Actividad -->
+                    <div class="bg-white rounded-lg shadow-sm p-6">
+                        <div class="space-y-6">
+                            <!-- Actividad 1 -->
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-4">
+                                    <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white">
+                                        <i class="fas fa-utensils"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p class="font-medium text-dark">Has publicado una nueva receta</p>
+                                        <p class="text-gray-600 mb-2">Has compartido <a href="receta.html" class="text-primary hover:underline">Paella Valenciana</a> con la comunidad.</p>
+                                        <p class="text-sm text-gray-500">Hace 2 días</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Actividad 2 -->
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-4">
+                                    <div class="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-white">
+                                        <i class="fas fa-heart"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p class="font-medium text-dark">Has guardado una receta</p>
+                                        <p class="text-gray-600 mb-2">Has añadido <a href="receta.html" class="text-primary hover:underline">Pizza Napolitana</a> a tus favoritos.</p>
+                                        <p class="text-sm text-gray-500">Hace 3 días</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Actividad 3 -->
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-4">
+                                    <div class="w-12 h-12 rounded-full bg-accent flex items-center justify-center text-dark">
+                                        <i class="fas fa-comment"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p class="font-medium text-dark">Has comentado una receta</p>
+                                        <p class="text-gray-600 mb-2">Has comentado en <a href="receta.html" class="text-primary hover:underline">Sushi Variado</a> de Yuki Tanaka.</p>
+                                        <p class="text-gray-600 italic mb-2">"¡Excelente receta! La preparé el fin de semana y quedó deliciosa. Gracias por compartir los detalles del arroz."</p>
+                                        <p class="text-sm text-gray-500">Hace 5 días</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Actividad 4 -->
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-4">
+                                    <div class="w-12 h-12 rounded-full bg-primary flex items-center justify-center text-white">
+                                        <i class="fas fa-user-plus"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p class="font-medium text-dark">Has seguido a un nuevo chef</p>
+                                        <p class="text-gray-600 mb-2">Has comenzado a seguir a <a href="#" class="text-primary hover:underline">Marco Rossi</a>.</p>
+                                        <p class="text-sm text-gray-500">Hace 1 semana</p>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Actividad 5 -->
+                            <div class="flex">
+                                <div class="flex-shrink-0 mr-4">
+                                    <div class="w-12 h-12 rounded-full bg-secondary flex items-center justify-center text-white">
+                                        <i class="fas fa-star"></i>
+                                    </div>
+                                </div>
+                                <div>
+                                    <div class="bg-gray-50 p-4 rounded-lg">
+                                        <p class="font-medium text-dark">Has valorado una receta</p>
+                                        <p class="text-gray-600 mb-2">Has dado 5 estrellas a <a href="receta.html" class="text-primary hover:underline">Tiramisú Clásico</a> de Giulia Bianchi.</p>
+                                        <p class="text-sm text-gray-500">Hace 1 semana</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <!-- Ver más actividad -->
+                        <div class="text-center mt-8">
+                            <button class="text-primary font-medium hover:underline">Cargar más actividad</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8 mt-12">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Columna 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Sabores del Mundo</h3>
+                    <p class="text-gray-300 mb-4">Plataforma global para compartir y descubrir recetas auténticas de todas las culturas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna 2 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="../index.html" class="text-gray-300 hover:text-primary transition-all duration-300">Inicio</a></li>
+                        <li><a href="categorias.html" class="text-gray-300 hover:text-primary transition-all duration-300">Categorías</a></li>
+                        <li><a href="comunidad.html" class="text-gray-300 hover:text-primary transition-all duration-300">Comunidad</a></li>
+                        <li><a href="contacto.html" class="text-gray-300 hover:text-primary transition-all duration-300">Contacto</a></li>
+                        <li><a href="subir-receta.html" class="text-gray-300 hover:text-primary transition-all duration-300">Subir Receta</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 3 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Categorías Populares</h3>
+                    <ul class="space-y-2">
+                        <li><a href="categorias.html#postres" class="text-gray-300 hover:text-primary transition-all duration-300">Postres</a></li>
+                        <li><a href="categorias.html#vegetariano" class="text-gray-300 hover:text-primary transition-all duration-300">Vegetariano</a></li>
+                        <li><a href="categorias.html#carnes" class="text-gray-300 hover:text-primary transition-all duration-300">Carnes</a></li>
+                        <li><a href="categorias.html#mariscos" class="text-gray-300 hover:text-primary transition-all duration-300">Mariscos</a></li>
+                        <li><a href="categorias.html#sopas" class="text-gray-300 hover:text-primary transition-all duration-300">Sopas</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 4 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">Calle Lope de Vega, 4, España</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">info@saboresdelmundo.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">+34 912 345 678</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Política de Privacidad</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Términos de Uso</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

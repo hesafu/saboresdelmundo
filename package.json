@@ -1,0 +1,24 @@
+{
+  "name": "sabores-del-mundo",
+  "version": "1.0.0",
+  "description": "Plataforma web para compartir recetas culinarias internacionales",
+  "main": "index.js",
+  "scripts": {
+    "dev": "npx tailwindcss -i ./src/input.css -o ./src/styles.css --watch",
+    "build": "npx tailwindcss -i ./src/input.css -o ./src/styles.css --minify",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "recetas",
+    "gastronomía",
+    "internacional",
+    "cocina"
+  ],
+  "author": "",
+  "license": "ISC",
+  "devDependencies": {
+    "autoprefixer": "^10.4.14",
+    "postcss": "^8.4.24",
+    "tailwindcss": "^3.3.2"
+  }
+}

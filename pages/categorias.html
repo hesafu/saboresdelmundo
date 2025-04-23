@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Categorías | Sabores del Mundo</title>
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        'sans': ['Open Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        'primary': '#FF6B35',
+                        'secondary': '#2EC4B6',
+                        'accent': '#FFBF69',
+                        'dark': '#1A535C',
+                        'light': '#F7FFF7',
+                    },
+                }
+            }
+        }
+    </script>
+    <style type="text/tailwindcss">
+        @layer components {
+            .btn-primary {
+                @apply bg-primary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .btn-secondary {
+                @apply bg-secondary text-white font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300;
+            }
+            
+            .card {
+                @apply bg-white rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300;
+            }
+            
+            .input-field {
+                @apply w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent;
+            }
+            
+            .section-title {
+                @apply text-3xl font-bold text-dark mb-6;
+            }
+            
+            .container-custom {
+                @apply max-w-7xl mx-auto px-4 sm:px-6 lg:px-8;
+            }
+
+            .star-rating {
+                @apply flex items-center;
+            }
+
+            .star {
+                @apply text-gray-300 text-xl;
+            }
+
+            .star.filled {
+                @apply text-accent;
+            }
+
+            .nav-link {
+                @apply text-dark hover:text-primary transition-all duration-300;
+            }
+
+            .mobile-menu {
+                @apply fixed inset-0 bg-dark bg-opacity-90 z-50 transform transition-transform duration-300;
+            }
+
+            .pagination-item {
+                @apply px-3 py-1 rounded-md mx-1 bg-gray-200 hover:bg-primary hover:text-white transition-all duration-300;
+            }
+
+            .pagination-item.active {
+                @apply bg-primary text-white;
+            }
+
+            .category-card {
+                @apply relative overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-all duration-300;
+            }
+
+            .category-card-overlay {
+                @apply absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70;
+            }
+
+            .category-card-content {
+                @apply absolute bottom-0 left-0 p-6 w-full;
+            }
+
+            .continent-card {
+                @apply relative overflow-hidden rounded-xl shadow-md hover:shadow-lg transition-all duration-300 cursor-pointer;
+            }
+
+            .continent-card-overlay {
+                @apply absolute inset-0 bg-black bg-opacity-40 hover:bg-opacity-30 transition-all duration-300;
+            }
+
+            .continent-card-content {
+                @apply absolute inset-0 flex flex-col items-center justify-center text-white;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light font-sans">
+    <!-- Navegación -->
+    <header class="bg-white shadow-md">
+        <div class="container-custom">
+            <nav class="flex justify-between items-center py-4">
+                <!-- Logo -->
+                <div class="flex items-center">
+                    <a href="../index.html" class="flex items-center">
+                        <span class="text-2xl font-bold text-primary">Sabores</span>
+                        <span class="text-2xl font-bold text-dark">del Mundo</span>
+                    </a>
+                </div>
+
+                <!-- Navegación Desktop -->
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="../index.html" class="nav-link font-medium">Inicio</a>
+                    <a href="categorias.html" class="nav-link font-medium text-primary">Categorías</a>
+                    <a href="comunidad.html" class="nav-link font-medium">Comunidad</a>
+                    <a href="contacto.html" class="nav-link font-medium">Contacto</a>
+                </div>
+
+                <!-- Botones de acción -->
+                <div class="hidden md:flex items-center space-x-4">
+                    <a href="subir-receta.html" class="btn-secondary">
+                        <i class="fas fa-plus mr-2"></i>Subir Receta
+                    </a>
+                    <div class="relative">
+                        <button id="profileDropdown" class="flex items-center focus:outline-none">
+                            <img src="../img/homer.jpg" alt="Perfil" class="w-10 h-10 rounded-full border-2 border-primary">
+                        </button>
+                        <div id="profileMenu" class="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-2 z-10 hidden">
+                            <a href="perfil.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mi Perfil</a>
+                            <a href="subir-receta.html" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Mis Recetas</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Favoritos</a>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Configuración</a>
+                            <div class="border-t border-gray-200 my-1"></div>
+                            <a href="#" class="block px-4 py-2 text-gray-700 hover:bg-gray-100">Cerrar Sesión</a>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Menú Hamburguesa (Móvil) -->
+                <div class="md:hidden">
+                    <button id="menuBtn" class="text-dark focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </nav>
+        </div>
+    </header>
+
+    <!-- Menú Móvil -->
+    <div id="mobileMenu" class="mobile-menu translate-x-full md:hidden">
+        <div class="flex flex-col h-full p-8">
+            <div class="flex justify-end">
+                <button id="closeMenuBtn" class="text-white focus:outline-none">
+                    <i class="fas fa-times text-2xl"></i>
+                </button>
+            </div>
+            <div class="flex flex-col items-center justify-center space-y-8 mt-16">
+                <div class="flex flex-col items-center mb-6">
+                    <img src="../img/homer.jpg" alt="Perfil" class="w-20 h-20 rounded-full border-2 border-primary mb-2">
+                    <h3 class="text-white font-medium">Pedro Picapiedra</h3>
+                </div>
+                <a href="../index.html" class="text-white text-xl hover:text-primary transition-all duration-300">Inicio</a>
+                <a href="categorias.html" class="text-white text-xl hover:text-primary transition-all duration-300">Categorías</a>
+                <a href="comunidad.html" class="text-white text-xl hover:text-primary transition-all duration-300">Comunidad</a>
+                <a href="contacto.html" class="text-white text-xl hover:text-primary transition-all duration-300">Contacto</a>
+                <a href="perfil.html" class="text-white text-xl hover:text-primary transition-all duration-300">Mi Perfil</a>
+                <a href="subir-receta.html" class="btn-secondary w-full text-center">
+                    <i class="fas fa-plus mr-2"></i>Subir Receta
+                </a>
+                <a href="#" class="text-white text-xl hover:text-primary transition-all duration-300">Cerrar Sesión</a>
+            </div>
+        </div>
+    </div>
+
+    <div class="bg-gray-100 py-3">
+        <div class="container-custom">
+            <div class="flex items-center text-sm text-gray-600">
+                <a href="../index.html" class="hover:text-primary">Inicio</a>
+                <span class="mx-2">/</span>
+                <span class="text-primary font-medium">Categorías</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- Contenido Principal -->
+    <main class="py-12">
+        <div class="container-custom">
+            <h1 class="section-title text-center mb-10">Explora Nuestras Categorías</h1>
+            
+            <!-- Buscador -->
+            <div class="max-w-3xl mx-auto mb-12">
+                <div class="relative">
+                    <input type="text" class="input-field pl-12 py-3 text-lg" placeholder="Buscar categorías o recetas...">
+                    <div class="absolute inset-y-0 left-0 pl-4 flex items-center pointer-events-none">
+                        <i class="fas fa-search text-gray-400 text-lg"></i>
+                    </div>
+                    <button class="absolute inset-y-0 right-0 px-4 text-white bg-primary rounded-r-lg">
+                        Buscar
+                    </button>
+                </div>
+            </div>
+            
+            <!-- Mapa de Continentes -->
+            <section class="mb-16" id="continentes">
+                <h2 class="text-2xl font-bold text-dark mb-6">Explora por Continentes</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                    <!-- Europa -->
+                    <div class="continent-card h-64">
+                        <img src="https://images.unsplash.com/photo-1513026705753-bc3fffca8bf4?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Europa" class="w-full h-full object-cover">
+                        <div class="continent-card-overlay"></div>
+                        <div class="continent-card-content">
+                            <h3 class="text-3xl font-bold mb-2">Europa</h3>
+                            <p class="text-center max-w-xs">Descubre la rica tradición culinaria europea, desde la pasta italiana hasta la paella española.</p>
+                            <a href="#europa" class="mt-4 bg-white text-primary font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- América -->
+                    <div class="continent-card h-64">
+                        <img src="../img/america.jpeg" alt="América" class="w-full h-full object-cover">
+                        <div class="continent-card-overlay"></div>
+                        <div class="continent-card-content">
+                            <h3 class="text-3xl font-bold mb-2">América</h3>
+                            <p class="text-center max-w-xs">Explora los sabores del continente americano, desde tacos mexicanos hasta asados argentinos.</p>
+                            <a href="#america" class="mt-4 bg-white text-primary font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Asia -->
+                    <div class="continent-card h-64">
+                        <img src="https://images.unsplash.com/photo-1493780474015-ba834fd0ce2f?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Asia" class="w-full h-full object-cover">
+                        <div class="continent-card-overlay"></div>
+                        <div class="continent-card-content">
+                            <h3 class="text-3xl font-bold mb-2">Asia</h3>
+                            <p class="text-center max-w-xs">Sumérgete en los exóticos sabores asiáticos, desde el sushi japonés hasta el curry tailandés.</p>
+                            <a href="#asia" class="mt-4 bg-white text-primary font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- África -->
+                    <div class="continent-card h-64">
+                        <img src="https://images.unsplash.com/photo-1523805009345-7448845a9e53?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="África" class="w-full h-full object-cover">
+                        <div class="continent-card-overlay"></div>
+                        <div class="continent-card-content">
+                            <h3 class="text-3xl font-bold mb-2">África</h3>
+                            <p class="text-center max-w-xs">Descubre los auténticos sabores africanos, desde el tajine marroquí hasta el bobotie sudafricano.</p>
+                            <a href="#africa" class="mt-4 bg-white text-primary font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Oceanía -->
+                    <div class="continent-card h-64">
+                        <img src="https://images.unsplash.com/photo-1506973035872-a4ec16b8e8d9?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Oceanía" class="w-full h-full object-cover">
+                        <div class="continent-card-overlay"></div>
+                        <div class="continent-card-content">
+                            <h3 class="text-3xl font-bold mb-2">Oceanía</h3>
+                            <p class="text-center max-w-xs">Explora los sabores únicos de Oceanía, desde el pavlova australiano hasta el hangi maorí.</p>
+                            <a href="#oceania" class="mt-4 bg-white text-primary font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Fusión -->
+                    <div class="continent-card h-64">
+                        <img src="https://images.unsplash.com/photo-1515669097368-22e68427d265?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fusión" class="w-full h-full object-cover">
+                        <div class="continent-card-overlay"></div>
+                        <div class="continent-card-content">
+                            <h3 class="text-3xl font-bold mb-2">Fusión</h3>
+                            <p class="text-center max-w-xs">Descubre recetas innovadoras que combinan técnicas y sabores de diferentes culturas.</p>
+                            <a href="#fusion" class="mt-4 bg-white text-primary font-semibold py-2 px-4 rounded-lg hover:bg-opacity-90 transition-all duration-300">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Categorías por Tipo -->
+            <section class="mb-16" id="tipos">
+                <h2 class="text-2xl font-bold text-dark mb-6">Categorías por Tipo</h2>
+                
+                <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6">
+                    <!-- Entrantes -->
+                    <div class="category-card">
+                        <img src="../img/entrantes.jpg" alt="Entrantes" class="w-full h-48 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Entrantes</h3>
+                            <p class="text-white text-sm">248 recetas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Platos Principales -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Platos Principales" class="w-full h-48 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Platos Principales</h3>
+                            <p class="text-white text-sm">412 recetas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Postres -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Postres" class="w-full h-48 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Postres</h3>
+                            <p class="text-white text-sm">356 recetas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Bebidas -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1551024709-8f23befc6f87?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Bebidas" class="w-full h-48 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Bebidas</h3>
+                            <p class="text-white text-sm">187 recetas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Aperitivos -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1541529086526-db283c563270?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Aperitivos" class="w-full h-48 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Aperitivos</h3>
+                            <p class="text-white text-sm">203 recetas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Sopas -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1547592166-23ac45744acd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Sopas" class="w-full h-48 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Sopas</h3>
+                            <p class="text-white text-sm">142 recetas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Ensaladas -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Ensaladas" class="w-full h-48 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Ensaladas</h3>
+                            <p class="text-white text-sm">178 recetas</p>
+                        </div>
+                    </div>
+                    
+                    <!-- Salsas -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1472476443507-c7a5948772fc?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Salsas" class="w-full h-48 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Salsas</h3>
+                            <p class="text-white text-sm">95 recetas</p>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Dietas Especiales -->
+            <section class="mb-16" id="dietas">
+                <h2 class="text-2xl font-bold text-dark mb-6">Dietas Especiales</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Vegetariano -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Vegetariano" class="w-full h-64 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Vegetariano</h3>
+                            <p class="text-white text-sm mb-3">312 recetas</p>
+                            <a href="#vegetariano" class="inline-block bg-white text-primary font-semibold py-1 px-3 rounded-lg hover:bg-opacity-90 transition-all duration-300 text-sm">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Vegano -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Vegano" class="w-full h-64 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Vegano</h3>
+                            <p class="text-white text-sm mb-3">245 recetas</p>
+                            <a href="#vegano" class="inline-block bg-white text-primary font-semibold py-1 px-3 rounded-lg hover:bg-opacity-90 transition-all duration-300 text-sm">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                    
+                    <!-- Sin Gluten -->
+                    <div class="category-card">
+                        <img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Sin Gluten" class="w-full h-64 object-cover">
+                        <div class="category-card-overlay"></div>
+                        <div class="category-card-content">
+                            <h3 class="text-white text-xl font-bold mb-1">Sin Gluten</h3>
+                            <p class="text-white text-sm mb-3">187 recetas</p>
+                            <a href="#singluten" class="inline-block bg-white text-primary font-semibold py-1 px-3 rounded-lg hover:bg-opacity-90 transition-all duration-300 text-sm">
+                                Ver recetas
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Recetas por Continente - Europa -->
+            <section class="mb-16" id="europa">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-dark">Europa</h2>
+                    <a href="#" class="text-primary font-medium hover:underline">Ver todas</a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- España -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="España" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                España
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Española</h3>
+                            <p class="text-gray-600 mb-4">Descubre los sabores mediterráneos con paellas, tapas y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">87 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Italia -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Italia" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                Italia
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Italiana</h3>
+                            <p class="text-gray-600 mb-4">Pasta, pizza, risotto y todos los clásicos de la gastronomía italiana.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">104 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Francia -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1414235077428-338989a2e8c0?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Francia" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                Francia
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Francesa</h3>
+                            <p class="text-gray-600 mb-4">Elegancia y sofisticación en platos como coq au vin, ratatouille y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">76 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Grecia -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1600891964599-f61ba0e24092?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Grecia" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                Grecia
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Griega</h3>
+                            <p class="text-gray-600 mb-4">Sabores mediterráneos con moussaka, souvlaki, tzatziki y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">58 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Recetas por Continente - Asia -->
+            <section class="mb-16" id="asia">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-dark">Asia</h2>
+                    <a href="#" class="text-primary font-medium hover:underline">Ver todas</a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- Japón -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1553621042-f6e147245754?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Japón" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                Japón
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Japonesa</h3>
+                            <p class="text-gray-600 mb-4">Sushi, ramen, tempura y otros platos tradicionales japoneses.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">92 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- China -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1563245372-f21724e3856d?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="China" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                China
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina China</h3>
+                            <p class="text-gray-600 mb-4">Descubre los sabores de la cocina china con dim sum, arroz frito y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">87 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Tailandia -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1559314809-0d155014e29e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tailandia" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                Tailandia
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Tailandesa</h3>
+                            <p class="text-gray-600 mb-4">Sabores intensos con pad thai, curry verde, tom yum y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">64 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- India -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1585937421612-70a008356fbe?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="India" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                India
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina India</h3>
+                            <p class="text-gray-600 mb-4">Especias y sabores exóticos con curry, tandoori, masala y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">78 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Recetas por Continente - América -->
+            <section class="mb-16" id="america">
+                <div class="flex justify-between items-center mb-6">
+                    <h2 class="text-2xl font-bold text-dark">América</h2>
+                    <a href="#" class="text-primary font-medium hover:underline">Ver todas</a>
+                </div>
+                
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+                    <!-- México -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="../img/cocina-mexicana.png" alt="México" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                México
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Mexicana</h3>
+                            <p class="text-gray-600 mb-4">Sabores picantes y frescos con tacos, enchiladas, guacamole y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">96 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Perú -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1535399831218-d5bd36d1a6b3?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Perú" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                Perú
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Peruana</h3>
+                            <p class="text-gray-600 mb-4">Fusión de sabores con ceviche, lomo saltado, causa limeña y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">68 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Argentina -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1594041680534-e8c8cdebd659?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Argentina" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                Argentina
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Argentina</h3>
+                            <p class="text-gray-600 mb-4">Tradición de asados, empanadas, chimichurri y dulce de leche.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">54 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Estados Unidos -->
+                    <div class="card">
+                        <div class="relative">
+                            <img src="https://images.unsplash.com/photo-1550547660-d9450f859349?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Estados Unidos" class="w-full h-48 object-cover">
+                            <div class="absolute top-4 right-4 bg-accent text-dark font-semibold py-1 px-3 rounded-full text-sm">
+                                EE.UU.
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <h3 class="text-lg font-bold text-dark mb-2">Cocina Estadounidense</h3>
+                            <p class="text-gray-600 mb-4">Clásicos como hamburguesas, mac & cheese, apple pie y más.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">72 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Explorar</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Colecciones Destacadas -->
+            <section class="mb-16" id="colecciones">
+                <h2 class="text-2xl font-bold text-dark mb-6">Colecciones Destacadas</h2>
+                
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Colección 1 -->
+                    <div class="card">
+                        <div class="relative">
+                            <div class="grid grid-cols-2 grid-rows-2 h-48">
+                                <img src="https://images.unsplash.com/photo-1551183053-bf91a1d81141?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella" class="w-full h-full object-cover">
+                                <img src="../img/paella-marisco.jpg" alt="Paella de Marisco" class="w-full h-full object-cover">
+                                <img src="https://images.unsplash.com/photo-1515443961218-a51367888e4b?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Arroz Negro" class="w-full h-full object-cover">
+                                <img src="https://images.unsplash.com/photo-1534080564583-6be75777b70a?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Fideuá" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                <h3 class="text-white text-xl font-bold">Arroces Españoles</h3>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-3">
+                                <img src="../img/homer.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                <span class="text-sm text-gray-600">Pedro Picapiedra</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">Una colección de los mejores arroces de la gastronomía española.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">12 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Ver colección</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Colección 2 -->
+                    <div class="card">
+                        <div class="relative">
+                            <div class="grid grid-cols-2 grid-rows-2 h-48">
+                                <img src="https://images.unsplash.com/photo-1563729784474-d77dbb933a9e?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tiramisú" class="w-full h-full object-cover">
+                                <img src="https://images.unsplash.com/photo-1551024506-0bccd828d307?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Cheesecake" class="w-full h-full object-cover">
+                                <img src="https://images.unsplash.com/photo-1587314168485-3236d6710814?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Tarta de Chocolate" class="w-full h-full object-cover">
+                                <img src="https://images.unsplash.com/photo-1488477181946-6428a0291777?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Macarons" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                <h3 class="text-white text-xl font-bold">Postres Internacionales</h3>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-3">
+                                <img src="https://randomuser.me/api/portraits/men/32.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                <span class="text-sm text-gray-600">Carlos Rodríguez</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">Los mejores postres de diferentes culturas alrededor del mundo.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">18 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Ver colección</a>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <!-- Colección 3 -->
+                    <div class="card">
+                        <div class="relative">
+                            <div class="grid grid-cols-2 grid-rows-2 h-48">
+                                <img src="https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Ensalada" class="w-full h-full object-cover">
+                                <img src="https://images.unsplash.com/photo-1540420773420-3366772f4999?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Verduras" class="w-full h-full object-cover">
+                                <img src="https://images.unsplash.com/photo-1512058564366-18510be2db19?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Paella Vegetariana" class="w-full h-full object-cover">
+                                <img src="https://images.unsplash.com/photo-1505576399279-565b52d4ac71?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80" alt="Curry Vegetariano" class="w-full h-full object-cover">
+                            </div>
+                            <div class="absolute inset-0 bg-black bg-opacity-40 flex items-center justify-center">
+                                <h3 class="text-white text-xl font-bold">Recetas Vegetarianas</h3>
+                            </div>
+                        </div>
+                        <div class="p-4">
+                            <div class="flex items-center mb-3">
+                                <img src="https://randomuser.me/api/portraits/women/45.jpg" alt="Chef" class="w-6 h-6 rounded-full mr-2">
+                                <span class="text-sm text-gray-600">Ana López</span>
+                            </div>
+                            <p class="text-gray-600 mb-3">Deliciosas recetas vegetarianas llenas de sabor y nutrientes.</p>
+                            <div class="flex justify-between items-center">
+                                <span class="text-sm text-gray-500">15 recetas</span>
+                                <a href="#" class="text-primary font-medium hover:underline">Ver colección</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+            
+            <!-- Crear Colección -->
+            <section class="bg-white rounded-xl shadow-md p-8 text-center">
+                <h2 class="text-2xl font-bold text-dark mb-4">¿Quieres crear tu propia colección?</h2>
+                <p class="text-gray-600 mb-6 max-w-2xl mx-auto">Organiza tus recetas favoritas en colecciones temáticas y compártelas con la comunidad.</p>
+                <a href="perfil.html" class="btn-primary">
+                    <i class="fas fa-plus mr-2"></i>Crear Colección
+                </a>
+            </section>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white pt-16 pb-8 mt-12">
+        <div class="container-custom">
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8 mb-12">
+                <!-- Columna 1 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Sabores del Mundo</h3>
+                    <p class="text-gray-300 mb-4">Plataforma global para compartir y descubrir recetas auténticas de todas las culturas.</p>
+                    <div class="flex space-x-4">
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-facebook-f"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-twitter"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-instagram"></i>
+                        </a>
+                        <a href="#" class="text-white hover:text-primary transition-all duration-300">
+                            <i class="fab fa-pinterest"></i>
+                        </a>
+                    </div>
+                </div>
+                
+                <!-- Columna 2 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Enlaces Rápidos</h3>
+                    <ul class="space-y-2">
+                        <li><a href="../index.html" class="text-gray-300 hover:text-primary transition-all duration-300">Inicio</a></li>
+                        <li><a href="categorias.html" class="text-gray-300 hover:text-primary transition-all duration-300">Categorías</a></li>
+                        <li><a href="comunidad.html" class="text-gray-300 hover:text-primary transition-all duration-300">Comunidad</a></li>
+                        <li><a href="contacto.html" class="text-gray-300 hover:text-primary transition-all duration-300">Contacto</a></li>
+                        <li><a href="subir-receta.html" class="text-gray-300 hover:text-primary transition-all duration-300">Subir Receta</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 3 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Categorías Populares</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#postres" class="text-gray-300 hover:text-primary transition-all duration-300">Postres</a></li>
+                        <li><a href="#vegetariano" class="text-gray-300 hover:text-primary transition-all duration-300">Vegetariano</a></li>
+                        <li><a href="#carnes" class="text-gray-300 hover:text-primary transition-all duration-300">Carnes</a></li>
+                        <li><a href="#mariscos" class="text-gray-300 hover:text-primary transition-all duration-300">Mariscos</a></li>
+                        <li><a href="#sopas" class="text-gray-300 hover:text-primary transition-all duration-300">Sopas</a></li>
+                    </ul>
+                </div>
+                
+                <!-- Columna 4 -->
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contacto</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">Calle Lope de Vega, 4 , España</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">info@saboresdelmundo.com</span>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone mt-1 mr-3 text-primary"></i>
+                            <span class="text-gray-300">+34 912 345 678</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+            
+            <div class="border-t border-gray-700 pt-8">
+                <div class="flex flex-col md:flex-row justify-between items-center">
+                    <p class="text-gray-400 mb-4 md:mb-0">&copy; 2025 Sabores del Mundo. Todos los derechos reservados.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Política de Privacidad</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Términos de Uso</a>
+                        <a href="#" class="text-gray-400 hover:text-primary transition-all duration-300">Cookies</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
